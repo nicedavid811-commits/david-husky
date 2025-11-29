@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2025 清邁曼谷 7天6夜 生日之旅</title>
 
-    <!-- Tailwind config 要放在 CDN 之前 -->
+    <!-- Tailwind Config -->
     <script>
         tailwind = window.tailwind || {};
         tailwind.config = {
@@ -32,61 +32,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <style type="text/tailwindcss">
+    <style>
+        /* Base Styles */
         body { 
             background-color: #f8fafc; 
             color: #334155; 
             -webkit-tap-highlight-color: transparent; 
-            font-family: theme('fontFamily.sans');
+            font-family: 'Noto Sans TC', 'Roboto', sans-serif;
         }
         
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Nav Tabs */
-        .nav-btn {
-            @apply px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2;
-        }
-        .nav-btn.active {
-            @apply bg-slate-800 text-white shadow-md scale-105;
-        }
-        .nav-btn.inactive {
-            @apply bg-white text-gray-500 border-gray-200 hover:bg-gray-50;
-        }
 
-        /* Content Layout */
-        .view-section {
-            @apply max-w-3xl mx-auto pb-24 px-4 pt-4;
-        }
-
-        /* Info Card Styling */
-        .info-card {
-            @apply bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4;
-        }
-        .info-header {
-            @apply font-bold text-gray-800 mb-3 flex items-center gap-2 text-base border-b border-gray-100 pb-2;
-        }
-        
-        /* List Styling */
-        .info-list {
-            @apply space-y-3 text-sm text-gray-600;
-        }
-        .info-item {
-            @apply flex items-start gap-3;
-        }
-        .info-icon-box {
-            @apply w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5;
-        }
-
-        /* Timeline */
-        .timeline-container {
-            @apply relative pl-6 border-l-2 border-gray-200 ml-3 space-y-8 pb-8;
-        }
-        .timeline-dot {
-            @apply absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content;
-        }
-
-        /* Confetti */
+        /* Confetti Animation */
         #confetti-container {
             pointer-events: none;
         }
@@ -102,24 +60,30 @@
             animation-iteration-count: infinite;
         }
         @keyframes confetti-fall {
-            0% {
-                transform: translateY(0) rotateZ(0deg);
-            }
-            100% {
-                transform: translateY(110vh) rotateZ(360deg);
-            }
+            0% { transform: translateY(0) rotateZ(0deg); }
+            100% { transform: translateY(110vh) rotateZ(360deg); }
         }
-        
-        /* Intro Box */
-        .day-intro {
-            @apply bg-gray-100/70 p-3 rounded-lg text-sm text-gray-600 mb-6 border border-gray-200 leading-relaxed;
+
+        /* Checkbox Custom Style */
+        .check-item input:checked + span {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        /* Print Styles */
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: white; padding: 0; }
+            .view-section { padding-bottom: 0 !important; padding-top: 0 !important; }
+            /* Ensure background colors print */
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
     </style>
 </head>
 <body class="pb-20 pt-6">
 
-    <!-- Confetti 容器 -->
-    <div id="confetti-container" class="fixed inset-0 z-40 overflow-hidden"></div>
+    <!-- Confetti Container -->
+    <div id="confetti-container" class="fixed inset-0 z-40 overflow-hidden no-print"></div>
 
     <!-- Header -->
     <div class="max-w-3xl mx-auto px-6 mb-6 flex justify-between items-start">
@@ -127,38 +91,52 @@
             <div class="text-xs font-bold text-accent uppercase tracking-widest mb-1">2025.12.02 - 12.08</div>
             <h1 class="text-2xl font-bold text-slate-900">Chiang Mai Birthday Trip</h1>
         </div>
-        <button onclick="window.print()" class="bg-white border border-gray-200 w-9 h-9 rounded-full flex items-center justify-center text-gray-500 shadow-sm transition hover:bg-gray-50 active:scale-95">
+        <button onclick="window.print()" class="bg-white border border-gray-200 w-9 h-9 rounded-full flex items-center justify-center text-gray-500 shadow-sm transition hover:bg-gray-50 active:scale-95 no-print">
             <i class="fa-solid fa-print"></i>
         </button>
     </div>
 
-    <!-- Tabs -->
-    <div class="sticky top-0 bg-gray-50/95 backdrop-blur z-50 border-b border-gray-200 shadow-sm">
+    <!-- Tabs (Updated with Dates) -->
+    <div class="sticky top-0 bg-gray-50/95 backdrop-blur z-50 border-b border-gray-200 shadow-sm no-print">
         <div class="max-w-3xl mx-auto px-4 py-3 overflow-x-auto hide-scrollbar flex gap-2">
-            <button onclick="switchTab('overview')" id="tab-overview" class="nav-btn active">
+            <button onclick="switchTab('overview')" id="tab-overview" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-slate-800 text-white shadow-md scale-105">
                 <i class="fa-solid fa-circle-info"></i>總覽
             </button>
-            <button onclick="switchTab('day1')" id="tab-day1" class="nav-btn inactive">Day 1</button>
-            <button onclick="switchTab('day2')" id="tab-day2" class="nav-btn inactive">Day 2</button>
-            <button onclick="switchTab('day3')" id="tab-day3" class="nav-btn inactive">Day 3</button>
-            <button onclick="switchTab('day4')" id="tab-day4" class="nav-btn inactive text-pink-500">
-                <i class="fa-solid fa-cake-candles"></i>Day 4
+            <button onclick="switchTab('day1')" id="tab-day1" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-white text-gray-500 border-gray-200 hover:bg-gray-50">
+                <span class="text-xs opacity-70">12/02</span> Day 1
             </button>
-            <button onclick="switchTab('day5')" id="tab-day5" class="nav-btn inactive">Day 5</button>
-            <button onclick="switchTab('day6')" id="tab-day6" class="nav-btn inactive">Day 6</button>
-            <button onclick="switchTab('day7')" id="tab-day7" class="nav-btn inactive">Day 7</button>
-            <button onclick="switchTab('klook')" id="tab-klook" class="nav-btn inactive">預訂</button>
+            <button onclick="switchTab('day2')" id="tab-day2" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-white text-gray-500 border-gray-200 hover:bg-gray-50">
+                <span class="text-xs opacity-70">12/03</span> Day 2
+            </button>
+            <button onclick="switchTab('day3')" id="tab-day3" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-white text-gray-500 border-gray-200 hover:bg-gray-50">
+                <span class="text-xs opacity-70">12/04</span> Day 3
+            </button>
+            <button onclick="switchTab('day4')" id="tab-day4" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-white text-gray-500 border-gray-200 hover:bg-gray-50 text-pink-500">
+                <i class="fa-solid fa-cake-candles"></i> <span class="text-xs opacity-70">12/05</span> Day 4
+            </button>
+            <button onclick="switchTab('day5')" id="tab-day5" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-white text-gray-500 border-gray-200 hover:bg-gray-50">
+                <span class="text-xs opacity-70">12/06</span> Day 5
+            </button>
+            <button onclick="switchTab('day6')" id="tab-day6" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-white text-gray-500 border-gray-200 hover:bg-gray-50">
+                <span class="text-xs opacity-70">12/07</span> Day 6
+            </button>
+            <button onclick="switchTab('day7')" id="tab-day7" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-white text-gray-500 border-gray-200 hover:bg-gray-50">
+                <span class="text-xs opacity-70">12/08</span> Day 7
+            </button>
+            <button onclick="switchTab('klook')" id="tab-klook" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-white text-gray-500 border-gray-200 hover:bg-gray-50">預訂 & 準備</button>
         </div>
     </div>
 
     <main>
 
         <!-- ================= OVERVIEW ================= -->
-        <div id="view-overview" class="view-section">
+        <div id="view-overview" class="view-section max-w-3xl mx-auto pb-24 px-4 pt-4">
             
             <!-- Flights -->
-            <div class="info-card">
-                <h3 class="info-header text-blue-600"><i class="fa-solid fa-plane"></i> 航班資訊</h3>
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4">
+                <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2 text-base border-b border-gray-100 pb-2 text-blue-600">
+                    <i class="fa-solid fa-plane"></i> 航班資訊
+                </h3>
                 <div class="space-y-4">
                     <!-- 去程 -->
                     <div class="bg-blue-50 rounded-lg p-3 border border-blue-100">
@@ -196,267 +174,394 @@
                 </div>
             </div>
 
-            <!-- Accommodation (Timeline) -->
-            <div class="info-card">
-                <h3 class="info-header text-indigo-600 mb-4"><i class="fa-solid fa-bed"></i> 住宿安排</h3>
+            <!-- Weather Info (Dynamic Daily) -->
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-sky-100 bg-sky-50 mb-4">
+                <div class="flex justify-between items-center mb-3 border-b border-sky-200 pb-2">
+                    <h3 class="font-bold text-sky-800 flex items-center gap-2 text-base">
+                        <i class="fa-solid fa-cloud-sun"></i> 逐日天氣預報
+                    </h3>
+                    <span class="text-[10px] text-sky-500">更新時間: 2025-11-29</span>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Chiang Mai Section -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold bg-sky-200 text-sky-800 px-2 py-0.5 rounded">清邁 (CNX)</span>
+                            <span class="text-[10px] text-gray-500">早晚溫差大，必帶外套！</span>
+                        </div>
+                        <div class="flex overflow-x-auto gap-3 pb-2 hide-scrollbar">
+                            <!-- Day 1 -->
+                            <div class="flex-shrink-0 w-20 bg-white rounded-lg p-2 text-center border border-sky-100">
+                                <div class="text-[10px] text-gray-400">12/02</div>
+                                <div class="text-xl text-yellow-400 my-1"><i class="fa-solid fa-sun"></i></div>
+                                <div class="text-xs font-bold text-gray-700">27°/15°</div>
+                            </div>
+                            <!-- Day 2 -->
+                            <div class="flex-shrink-0 w-20 bg-white rounded-lg p-2 text-center border border-sky-100">
+                                <div class="text-[10px] text-gray-400">12/03</div>
+                                <div class="text-xl text-yellow-400 my-1"><i class="fa-solid fa-sun"></i></div>
+                                <div class="text-xs font-bold text-gray-700">28°/16°</div>
+                            </div>
+                            <!-- Day 3 -->
+                            <div class="flex-shrink-0 w-20 bg-white rounded-lg p-2 text-center border border-sky-100">
+                                <div class="text-[10px] text-gray-400">12/04</div>
+                                <div class="text-xl text-yellow-400 my-1"><i class="fa-solid fa-sun"></i></div>
+                                <div class="text-xs font-bold text-gray-700">28°/16°</div>
+                            </div>
+                            <!-- Day 4 -->
+                            <div class="flex-shrink-0 w-20 bg-white rounded-lg p-2 text-center border border-sky-100">
+                                <div class="text-[10px] text-gray-400">12/05</div>
+                                <div class="text-xl text-yellow-400 my-1"><i class="fa-solid fa-sun"></i></div>
+                                <div class="text-xs font-bold text-gray-700">28°/17°</div>
+                            </div>
+                            <!-- Day 5 -->
+                            <div class="flex-shrink-0 w-20 bg-white rounded-lg p-2 text-center border border-sky-100">
+                                <div class="text-[10px] text-gray-400">12/06</div>
+                                <div class="text-xl text-yellow-400 my-1"><i class="fa-solid fa-sun"></i></div>
+                                <div class="text-xs font-bold text-gray-700">28°/18°</div>
+                            </div>
+                            <!-- Day 6 -->
+                            <div class="flex-shrink-0 w-20 bg-white rounded-lg p-2 text-center border border-sky-100">
+                                <div class="text-[10px] text-gray-400">12/07</div>
+                                <div class="text-xl text-yellow-400 my-1"><i class="fa-solid fa-sun"></i></div>
+                                <div class="text-xs font-bold text-gray-700">28°/19°</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bangkok Section -->
+                    <div class="border-t border-sky-200 pt-3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold bg-orange-200 text-orange-800 px-2 py-0.5 rounded">曼谷 (BKK)</span>
+                            <span class="text-[10px] text-gray-500">溫暖潮濕，短袖為主</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <!-- Day 6 (Arrival) -->
+                            <div class="flex-1 bg-white rounded-lg p-2 text-center border border-orange-100">
+                                <div class="text-[10px] text-gray-400">12/07</div>
+                                <div class="text-xl text-orange-400 my-1"><i class="fa-solid fa-cloud-sun"></i></div>
+                                <div class="text-xs font-bold text-gray-700">31°/23°</div>
+                                <div class="text-[10px] text-gray-400">多雲時晴</div>
+                            </div>
+                            <!-- Day 7 -->
+                            <div class="flex-1 bg-white rounded-lg p-2 text-center border border-orange-100">
+                                <div class="text-[10px] text-gray-400">12/08</div>
+                                <div class="text-xl text-orange-400 my-1"><i class="fa-solid fa-cloud-sun"></i></div>
+                                <div class="text-xs font-bold text-gray-700">31°/23°</div>
+                                <div class="text-[10px] text-gray-400">大致多雲</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accommodation -->
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4">
+                <h3 class="font-bold text-indigo-600 mb-4 flex items-center gap-2 text-base border-b border-gray-100 pb-2">
+                    <i class="fa-solid fa-bed"></i> 住宿安排
+                </h3>
                 <div class="relative pl-4 space-y-6 border-l-2 border-indigo-100 ml-2 mt-2 pb-2">
-                    
                     <!-- Hotel 1 -->
                     <div class="relative">
-                        <div class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-indigo-400 border-2 border-white shadow-sm"></div>
+                        <div class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-indigo-400 border-2 border-white shadow-sm box-content"></div>
                         <div class="bg-indigo-50/50 p-3 rounded-lg border border-indigo-100">
                             <div class="flex justify-between items-start mb-1">
                                 <div>
-                                    <h4 class="font-bold text-gray-800 text-sm">Stay with Nimman</h4>
+                                    <h4 class="font-bold text-gray-800 text-sm">
+                                        Stay with Nimman
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Stay+with+Nimman+Chiang+Mai" target="_blank" class="text-gray-400 hover:text-indigo-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                                    </h4>
                                     <p class="text-xs text-gray-500 mt-0.5">
                                         <i class="fa-solid fa-map-pin mr-1"></i>清邁尼曼區
                                     </p>
                                 </div>
                                 <span class="text-[10px] font-bold bg-white text-indigo-600 px-2 py-1 rounded shadow-sm border border-indigo-100">3 晚</span>
                             </div>
-                            <div class="text-[10px] text-gray-400 font-mono">12/02 (二) - 12/05 (五)</div>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-1">
+                                位於潮流尼曼區核心，設計時尚新穎。頂樓有無邊際泳池，下樓即是 Maya 百貨與 One Nimman，逛街覓食超方便。
+                            </p>
+                            <div class="text-[10px] text-gray-400 font-mono border-t border-indigo-100 pt-1 mt-2">12/02 (二) - 12/05 (五)</div>
                         </div>
                     </div>
-
                     <!-- Hotel 2 -->
                     <div class="relative">
-                        <div class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-pink-400 border-2 border-white shadow-sm"></div>
+                        <div class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-pink-400 border-2 border-white shadow-sm box-content"></div>
                         <div class="bg-pink-50/50 p-3 rounded-lg border border-pink-100">
                             <div class="flex justify-between items-start mb-1">
                                 <div>
-                                    <h4 class="font-bold text-gray-800 text-sm">Melia Chiang Mai</h4>
+                                    <h4 class="font-bold text-gray-800 text-sm">
+                                        Melia Chiang Mai
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Melia+Chiang+Mai" target="_blank" class="text-gray-400 hover:text-pink-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                                    </h4>
                                     <p class="text-xs text-gray-500 mt-0.5">
                                         <i class="fa-solid fa-star mr-1 text-yellow-400"></i>清邁古城/河畔 (五星)
                                     </p>
                                 </div>
                                 <span class="text-[10px] font-bold bg-white text-pink-500 px-2 py-1 rounded shadow-sm border border-pink-100">2 晚</span>
                             </div>
-                            <div class="text-[10px] text-gray-400 font-mono">12/05 (五) - 12/07 (日)</div>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-1">
+                                融合西班牙與泰北蘭納風格的五星飯店。鄰近長康路夜市，擁有清邁最高的 360 度高空酒吧 <strong>Mai The Sky Bar</strong>，且為慶生行程的亮點住宿。
+                            </p>
+                            <div class="text-[10px] text-gray-400 font-mono border-t border-pink-100 pt-1 mt-2">12/05 (五) - 12/07 (日)</div>
                         </div>
                     </div>
-
                     <!-- Hotel 3 -->
                     <div class="relative">
-                        <div class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-gray-400 border-2 border-white shadow-sm"></div>
+                        <div class="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-gray-400 border-2 border-white shadow-sm box-content"></div>
                         <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
                             <div class="flex justify-between items-start mb-1">
                                 <div>
-                                    <h4 class="font-bold text-gray-800 text-sm">Park Nine Suvarnabhumi</h4>
+                                    <h4 class="font-bold text-gray-800 text-sm">
+                                        Park Nine Suvarnabhumi
+                                        <a href="https://www.google.com/maps/search/?api=1&query=The+Park+Nine+Hotel+Suvarnabhumi" target="_blank" class="text-gray-400 hover:text-gray-600 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                                    </h4>
                                     <p class="text-xs text-gray-500 mt-0.5">
                                         <i class="fa-solid fa-plane mr-1"></i>曼谷機場旁
                                     </p>
                                 </div>
                                 <span class="text-[10px] font-bold bg-white text-gray-600 px-2 py-1 rounded shadow-sm border border-gray-200">1 晚</span>
                             </div>
-                            <div class="text-[10px] text-gray-400 font-mono">12/07 (日) - 12/08 (一)</div>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-1">
+                                距離蘇凡納布機場僅 10 分鐘車程，轉機首選。擁有渡假村等級的絕美河畔泳池，房間寬敞舒適，適合回國前最後一晚的徹底放鬆。
+                            </p>
+                            <div class="text-[10px] text-gray-400 font-mono border-t border-gray-200 pt-1 mt-2">12/07 (日) - 12/08 (一)</div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            <!-- 2025 Travel Info -->
-            <div class="info-card bg-teal-50 border-teal-100">
-                <h3 class="info-header text-teal-800 border-teal-200">
+            <!-- BTS Map (Updated Image) -->
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-purple-200 bg-purple-50/30 mb-4 no-print">
+                <h3 class="font-bold text-purple-800 mb-3 flex items-center gap-2 text-base border-b border-purple-200 pb-2">
+                    <i class="fa-solid fa-map-signs"></i> 曼谷捷運路線圖
+                </h3>
+                <div class="space-y-3">
+                    <div class="bg-white p-2 rounded border border-purple-100">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Bangkok_rapid_transit_map_en.svg/1200px-Bangkok_rapid_transit_map_en.svg.png" alt="Bangkok BTS MRT Map" class="w-full h-auto rounded" loading="lazy">
+                    </div>
+                    <div class="text-xs text-gray-600 bg-white p-2.5 rounded border border-purple-100">
+                        <p class="font-bold text-purple-700 mb-1"><i class="fa-solid fa-location-arrow"></i> 您的位置與交通：</p>
+                        <ul class="space-y-1 list-disc pl-4">
+                            <li><strong>住宿位置</strong>：您住的 Park Nine 靠近機場快線 (Airport Rail Link, 紅線) 的 <strong>Lat Krabang (A2)</strong> 站。</li>
+                            <li><strong>進市區</strong>：從 A2 搭乘往 Phaya Thai 方向即可進入曼谷市中心轉乘 BTS (綠線) 或 MRT (藍線)。</li>
+                        </ul>
+                    </div>
+                    <a href="https://www.bts.co.th/eng/routemap.html" target="_blank" class="block text-center text-xs bg-purple-100 text-purple-700 py-2 rounded hover:bg-purple-200 transition-colors font-bold">
+                        <i class="fa-solid fa-download mr-1"></i> 查看 BTS 官網高清大圖
+                    </a>
+                </div>
+            </div>
+
+            <!-- Travel Info -->
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-teal-100 bg-teal-50 mb-4">
+                <h3 class="font-bold text-teal-800 mb-3 flex items-center gap-2 text-base border-b border-teal-200 pb-2">
                     <i class="fa-solid fa-clipboard-check"></i> 2025 入境與旅遊須知
                 </h3>
                 
-                <div class="space-y-6">
-                    <!-- 醫療與保險 -->
+                <div class="space-y-5">
+                    <div class="bg-white p-3 rounded-lg border border-teal-100">
+                        <h4 class="text-xs font-bold text-teal-700 mb-2 flex items-center gap-1">
+                            <i class="fa-solid fa-plane-arrival"></i> 清邁機場 (CNX) 特別提醒
+                        </h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-teal-500"><i class="fa-solid fa-hourglass-half"></i></div>
+                                <div><strong>通關時間</strong>：清邁機場較小，國際航班抵達時人潮集中，入境排隊通常需 <strong>40-60 分鐘</strong>。</div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-red-500"><i class="fa-solid fa-ban"></i></div>
+                                <div><strong>嚴禁電子菸</strong>：泰國全境禁止電子菸（含持有、使用、攜帶入境），機場查驗嚴格，違者罰款極重。</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-red-100">
+                        <h4 class="text-xs font-bold text-red-700 mb-2 flex items-center gap-1">
+                            <i class="fa-solid fa-triangle-exclamation"></i> 海關規定 (罰款陷阱)
+                        </h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-red-500"><i class="fa-solid fa-wine-bottle"></i></div>
+                                <div>
+                                    <strong>菸酒限額</strong>：每人限帶 <strong>香菸 200 支 (1條)</strong>、<strong>酒精 1 公升</strong>。<br>
+                                    <span class="text-xs text-gray-500">⚠️ 注意：切勿幫同行者手提！若一人身上被發現超過限額 (即使是幫朋友拿)，視為攜帶超量，罰金約為貨價 10-15 倍。</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                     <div>
                         <h4 class="text-xs font-bold text-teal-600 uppercase mb-2 flex items-center gap-1">
-                            <i class="fa-solid fa-user-shield"></i> 醫療與保險 (重點)
+                            <i class="fa-solid fa-passport"></i> 必備文件與填寫資料
                         </h4>
-                        <ul class="info-list">
-                            <li class="info-item">
-                                <div class="info-icon-box text-teal-600"><i class="fa-solid fa-file-medical"></i></div>
-                                <div><strong>英文保險證明</strong>：強烈建議列印紙本備查。外國人泰國就醫費用極高，務必投保「海外突發疾病」險。</div>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-teal-600"><i class="fa-solid fa-check"></i></div>
+                                <div><strong>免簽入境</strong>：持台灣護照目前可免簽停留 <span class="text-green-600 font-bold">60 天</span> (2024年7月起生效)。務必確認護照效期需 <strong>6 個月以上</strong>。</div>
                             </li>
-                            <li class="info-item">
-                                <div class="info-icon-box text-red-500"><i class="fa-solid fa-phone-volume"></i></div>
-                                <div><strong>緊急電話</strong>：觀光警察 1155 (中文可)、救護車 1669。</div>
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-teal-600"><i class="fa-solid fa-pen-slash"></i></div>
+                                <div><strong>入境卡 (TM.6)</strong>：<span class="text-green-600 font-bold">免填寫</span>。目前針對空路入境旅客暫時取消填寫 TM.6 表格。</div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-teal-600"><i class="fa-solid fa-globe"></i></div>
+                                <div><strong>電子授權 (ETA)</strong>：<span class="text-gray-500">暫緩實施</span>。持台灣護照目前不需要線上申請任何文件。</div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-teal-600"><i class="fa-solid fa-file-contract"></i></div>
+                                <div><strong>備查文件</strong>：建議將 <strong>回程機票 (英文版)</strong> 與 <strong>第一晚飯店訂單</strong> 截圖或列印備用。</div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-teal-600"><i class="fa-solid fa-sack-dollar"></i></div>
+                                <div><strong>現金抽查</strong>：需備妥個人 <strong>2 萬泰銖</strong> (或等值外幣) 現金。這雖然是隨機抽查，但若被查到身上沒現金，可能會被拒絕入境。</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-teal-600 uppercase mb-2 flex items-center gap-1">
+                            <i class="fa-solid fa-kit-medical"></i> 交通與醫療
+                        </h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-teal-600"><i class="fa-solid fa-hospital"></i></div>
+                                <div>
+                                    <strong>醫療保險</strong>：泰國私立醫院費用昂貴，強烈建議投保涵蓋 <strong>「海外突發疾病」</strong> 的旅遊險，並申請 <strong>英文投保證明</strong> 備查，看診時醫院通常會要求出示。
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-orange-500"><i class="fa-solid fa-id-card"></i></div>
+                                <div><strong>租車臨檢</strong>：清邁警察臨檢非常勤快。騎機車務必戴安全帽，並持有標註「A類 機車」的國際駕照。無照罰款約 500-1000 泰銖 (3天內不重複罰)。</div>
                             </li>
                         </ul>
                     </div>
 
-                    <!-- 交通與租車 -->
-                    <div>
-                        <h4 class="text-xs font-bold text-teal-600 uppercase mb-2 flex items-center gap-1">
-                            <i class="fa-solid fa-motorcycle"></i> 交通與租車
+                    <!-- Emergency Contact (New Section) -->
+                    <div class="bg-white p-3 rounded-lg border border-red-200 bg-red-50/30">
+                        <h4 class="text-xs font-bold text-red-700 mb-2 flex items-center gap-1">
+                            <i class="fa-solid fa-phone-volume animate-pulse"></i> 緊急聯絡資訊 (請截圖保存)
                         </h4>
-                        <ul class="info-list">
-                            <li class="info-item">
-                                <div class="info-icon-box text-orange-500"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                                <div><strong>國際駕照</strong>：租機車需具備「A類 (機車)」蓋章。若僅有 B類 (汽車) 視同無照，清邁臨檢頻繁，罰款 500-1000 銖。</div>
-                            </li>
-                            <li class="info-item">
-                                <div class="info-icon-box text-teal-600"><i class="fa-solid fa-road"></i></div>
-                                <div><strong>右駕左行</strong>：與台灣相反，過馬路請先看右再看左。</div>
-                            </li>
-                        </ul>
+                        <div class="grid grid-cols-1 gap-3">
+                            <a href="tel:1155" class="flex items-center gap-3 p-2 rounded hover:bg-red-50 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0"><i class="fa-solid fa-user-shield"></i></div>
+                                <div>
+                                    <div class="text-sm font-bold text-gray-800">觀光警察：1155</div>
+                                    <div class="text-[10px] text-gray-500">有中文服務。遇到詐騙、糾紛或失竊時的首選。</div>
+                                </div>
+                            </a>
+                            <a href="tel:1669" class="flex items-center gap-3 p-2 rounded hover:bg-red-50 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0"><i class="fa-solid fa-truck-medical"></i></div>
+                                <div>
+                                    <div class="text-sm font-bold text-gray-800">救護車：1669</div>
+                                    <div class="text-[10px] text-gray-500">醫療急救專線 (全泰國通用)。</div>
+                                </div>
+                            </a>
+                            <a href="tel:+66816664006" class="flex items-center gap-3 p-2 rounded hover:bg-red-50 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0"><i class="fa-solid fa-passport"></i></div>
+                                <div>
+                                    <div class="text-sm font-bold text-gray-800">駐泰代表處急難救助</div>
+                                    <div class="text-xs font-mono text-red-600 font-bold">+66-81-666-4006</div>
+                                    <div class="text-[10px] text-gray-500">僅限護照遺失、被拘留、重大車禍等緊急狀況使用。</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
 
-                    <!-- 入境與簽證 -->
-                    <div>
-                        <h4 class="text-xs font-bold text-teal-600 uppercase mb-2 flex items-center gap-1">
-                            <i class="fa-solid fa-passport"></i> 入境與簽證
-                        </h4>
-                        <ul class="info-list">
-                            <li class="info-item">
-                                <div class="info-icon-box text-teal-600"><i class="fa-solid fa-check"></i></div>
-                                <div><strong>免簽 60 天</strong>：持台灣護照可直接入境。</div>
-                            </li>
-                            <li class="info-item">
-                                <div class="info-icon-box text-teal-600"><i class="fa-solid fa-pen-slash"></i></div>
-                                <div><strong>入境卡</strong>：空路入境目前「暫免」填寫 TM.6 表格；ETA (電子授權) 目前暫緩實施。</div>
-                            </li>
-                            <li class="info-item">
-                                <div class="info-icon-box text-teal-600"><i class="fa-solid fa-sack-dollar"></i></div>
-                                <div><strong>現金抽查</strong>：需備妥個人 2 萬 (家庭 4 萬) 泰銖等值外幣。</div>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
 
         <!-- ================= DAY 1 ================= -->
-        <div id="view-day1" class="view-section hidden">
+        <div id="view-day1" class="view-section hidden max-w-3xl mx-auto pb-24 px-4 pt-4">
             <div class="flex justify-between items-end mb-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900">Day 1 (12/02 二)</h2>
                     <p class="text-sm text-gray-500">抵達與會合 • 尼曼區</p>
                 </div>
-                <button onclick="openGoogleMaps('day1')" class="text-xs bg-gray-200 hover:bg-gray-300 px-3 py-1.5 rounded-lg font-bold text-gray-600 transition active:scale-95">開啟地圖</button>
+                <button onclick="openGoogleMaps('day1')" class="text-xs bg-gray-200 hover:bg-gray-300 px-3 py-1.5 rounded-lg font-bold text-gray-600 transition active:scale-95 no-print">開啟地圖</button>
             </div>
-
-            <!-- Day Intro -->
-            <div class="day-intro">
+            <div class="bg-gray-100/70 p-3 rounded-lg text-sm text-gray-600 mb-6 border border-gray-200 leading-relaxed">
                 <i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>
                 旅程的第一天，從<strong>慢活</strong>開始。先品嚐泰北最經典的濃郁咖哩麵，下午在飯店大廳浪漫會合後，用舒適的雙人精油按摩洗去搭機的疲憊，晚上在尼曼區最美的玻璃屋餐廳享用有機泰北料理。
             </div>
-
-            <div class="timeline-container">
-                <!-- 機場攻略 -->
-                <div class="relative">
-                    <div class="timeline-dot bg-blue-500 border-blue-200"></div>
-                    <div class="info-card bg-blue-50/30 border-blue-200">
+            <div class="relative pl-6 border-l-2 border-gray-200 ml-3 space-y-8 pb-8">
+               
+               <!-- Airport -->
+               <div class="relative">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-blue-500 border-blue-200"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-blue-200 bg-blue-50/30 mb-4">
                         <h3 class="font-bold text-blue-800 mb-3">10:25 抵達 (CI851) & 機場通關攻略</h3>
                         <div class="bg-white p-4 rounded-xl border border-blue-100 space-y-4 text-sm">
-                            
-                            <!-- 通關與網卡 -->
-                            <div>
-                                <p class="text-xs font-bold text-blue-600 mb-1"><i class="fa-solid fa-passport"></i> 入境與網卡</p>
-                                <ul class="text-xs text-gray-600 space-y-1 pl-4 list-disc">
-                                    <li>下機後跟著 "Arrival" 指標走，目前台灣免簽，直接排外國人通道。</li>
-                                    <li>領完行李後，出口處有 AIS / True Move 櫃台可領取或購買網卡 (建議先在台灣買好更省時)。</li>
-                                </ul>
-                            </div>
-
-                            <!-- 交通與叫車 -->
-                            <div>
-                                <p class="text-xs font-bold text-blue-600 mb-1"><i class="fa-solid fa-taxi"></i> 交通：Bolt 叫車最划算</p>
-                                <ul class="text-xs text-gray-600 space-y-1 pl-4 list-disc">
-                                    <li>打開 Bolt APP 輸入目的地：<strong>Stay with Nimman</strong>。</li>
-                                    <li>車資預估：約 <strong>150 - 200 THB</strong> (視時段而定)。</li>
-                                    <li><strong>關鍵上車點</strong>：走出國際線大廳後，往左走到 <strong>Gate 11 - 13</strong> 外面等車。這裡車流較少，司機比較好停。不要在 Gate 1 (計程車排班處) 等，會被趕。</li>
-                                </ul>
-                            </div>
-
-                            <!-- 換匯 -->
-                            <div>
-                                <p class="text-xs font-bold text-blue-600 mb-1"><i class="fa-solid fa-money-bill-wave"></i> 換匯小提醒</p>
-                                <p class="text-xs text-gray-600 pl-1">機場匯率極差，建議先用 ATM 領少量或在台灣換一點點夠付車資就好，進市區再去 Super Rich (尼曼區有分店)。</p>
-                            </div>
-
+                            <div><p class="text-xs font-bold text-blue-600 mb-1"><i class="fa-solid fa-passport"></i> 入境與網卡</p><ul class="text-xs text-gray-600 space-y-1 pl-4 list-disc"><li>下機後跟著 "Arrival" 指標走，目前台灣免簽，直接排外國人通道。</li><li>領完行李後，出口處有 AIS / True Move 櫃台，或可使用 <strong>eSIM</strong> (建議出發前在台灣設定好) 免換卡。</li></ul></div>
+                            <div><p class="text-xs font-bold text-blue-600 mb-1"><i class="fa-solid fa-taxi"></i> 交通：Bolt 叫車最划算</p><ul class="text-xs text-gray-600 space-y-1 pl-4 list-disc"><li>打開 Bolt APP 輸入目的地：<strong>Stay with Nimman</strong>。</li><li>車資預估：約 <strong>150 - 200 THB</strong>。</li><li><strong>關鍵上車點</strong>：走出國際線大廳後，往左走到 <strong>Gate 11 - 13</strong> 外面等車。</li></ul></div>
+                            <div><p class="text-xs font-bold text-blue-600 mb-1"><i class="fa-solid fa-money-bill-wave"></i> 換匯小提醒</p><p class="text-xs text-gray-600 pl-1">機場匯率極差，建議先用 ATM 領少量，進市區再去 Super Rich。</p></div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 午餐 -->
+                <!-- Lunch -->
                 <div class="relative">
-                    <div class="timeline-dot bg-yellow-400 border-yellow-100"></div>
-                    <div class="info-card">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-yellow-400 border-yellow-100"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4">
                         <h3 class="font-bold text-gray-800 mb-3">12:30 獨享午餐：泰北首選</h3>
                         <p class="text-sm text-gray-500 mb-3">等待期間，推薦步行品嚐尼曼區兩大名店：</p>
                         <div class="space-y-3">
                             <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
                                 <div class="font-bold text-gray-800 text-sm flex items-center gap-2">
-                                    <i class="fa-solid fa-bowl-food text-yellow-500"></i> Kao Soy Nimman
+                                    <i class="fa-solid fa-bowl-food text-yellow-500"></i> 
+                                    Kao Soy Nimman
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Kao+Soy+Nimman" target="_blank" class="text-gray-400 hover:text-yellow-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
                                 </div>
                                 <p class="text-xs text-gray-600 mt-1">必點泰北咖哩麵 (Kao Soy)。濃郁的椰奶咖哩湯頭，配上滑順雞蛋麵與酥脆炸麵條，口感層次豐富。是米其林推薦名店。</p>
                             </div>
                             <div class="bg-orange-50 p-3 rounded-lg border border-orange-100">
                                 <div class="font-bold text-gray-800 text-sm flex items-center gap-2">
-                                    <i class="fa-solid fa-drumstick-bite text-orange-500"></i> Cherng Doi Roast Chicken
+                                    <i class="fa-solid fa-drumstick-bite text-orange-500"></i> 
+                                    Cherng Doi Roast Chicken
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Cherng+Doi+Roast+Chicken" target="_blank" class="text-gray-400 hover:text-orange-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
                                 </div>
                                 <p class="text-xs text-gray-600 mt-1">皮脆肉嫩的烤雞，重點是特製的羅望子沾醬 (Nam Jim Jaew)，酸辣解膩，配糯米飯一絕。</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 會合 -->
+                <!-- Meet -->
                 <div class="relative">
-                    <div class="timeline-dot bg-pink-400 border-pink-100"></div>
-                    <div class="bg-pink-50 rounded-xl p-4 border border-pink-100 flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-pink-500 text-lg shadow-sm">
-                            <i class="fa-solid fa-heart"></i>
-                        </div>
-                        <div>
-                            <div class="font-bold text-gray-800">15:55 女友抵達 (JX751)</div>
-                            <div class="text-xs text-gray-500">約 16:40 於飯店大廳會合。</div>
-                        </div>
-                    </div>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-pink-400 border-pink-100"></div>
+                    <div class="bg-pink-50 rounded-xl p-4 border border-pink-100 flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-pink-500 text-lg shadow-sm"><i class="fa-solid fa-heart"></i></div><div><div class="font-bold text-gray-800">15:55 女友抵達 (JX751)</div><div class="text-xs text-gray-500">約 16:40 於飯店大廳會合。</div></div></div>
                 </div>
-
-                <!-- 晚間 -->
+                <!-- Night -->
                 <div class="relative space-y-4">
                     <div class="relative pl-0">
-                        <div class="timeline-dot bg-gray-400 border-gray-100"></div>
-                        <div class="info-card py-3 px-4 bg-gray-50/50">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-gray-400 border-gray-100"></div>
+                        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4 bg-gray-50/50">
                             <div class="flex justify-between items-center mb-2">
-                                <div class="font-bold text-gray-800">18:00 Supreme CNX 雙人按摩</div>
+                                <div class="font-bold text-gray-800">
+                                    18:00 Supreme CNX 雙人按摩
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Supreme+CNX" target="_blank" class="text-gray-400 hover:text-gray-600 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                                </div>
                                 <span class="text-[10px] bg-white border border-gray-200 text-gray-500 px-2 py-0.5 rounded">極簡質感風</span>
                             </div>
                             <div class="space-y-3">
-                                <p class="text-xs text-gray-500 leading-relaxed">
-                                    尼曼區評價極高的按摩店，走<strong>「無印良品風」</strong>的純白木質調設計，環境非常乾淨素雅，氛圍寧靜，是情侶放鬆的首選。
-                                </p>
+                                <p class="text-xs text-gray-500 leading-relaxed">尼曼區評價極高的按摩店，走<strong>「無印良品風」</strong>的純白木質調設計，環境非常乾淨素雅，氛圍寧靜。</p>
                                 <div class="bg-white p-2.5 rounded border border-gray-200">
                                     <p class="text-xs font-bold text-gray-700 mb-1.5">💆‍♀️ 推薦療程：</p>
                                     <ul class="text-xs text-gray-600 space-y-1.5">
-                                        <li class="flex items-start gap-2">
-                                            <i class="fa-solid fa-leaf text-green-500 mt-0.5"></i>
-                                            <div>
-                                                <strong>Aromatherapy Oil (精油按摩)</strong>
-                                                <div class="text-[10px] text-gray-400">最適合第一天！手法輕柔流暢，搭配好聞的精油，能徹底釋放搭機的疲憊。</div>
-                                            </div>
-                                        </li>
-                                        <li class="flex items-start gap-2">
-                                            <i class="fa-solid fa-fire text-red-400 mt-0.5"></i>
-                                            <div>
-                                                <strong>Hot Stone (熱石按摩)</strong>
-                                                <div class="text-[10px] text-gray-400">如果覺得冷氣房待太久或身體很濕氣，溫熱的石頭推背非常舒服。</div>
-                                            </div>
-                                        </li>
+                                        <li><strong>Aromatherapy Oil (精油按摩)</strong>：最適合第一天！手法輕柔流暢，搭配好聞的精油，能徹底釋放搭機的疲憊。</li>
+                                        <li><strong>Hot Stone (熱石按摩)</strong>：如果覺得冷氣房待太久或身體很濕氣，溫熱的石頭推背非常舒服。</li>
                                     </ul>
                                 </div>
                                 <div class="flex gap-2 text-[10px] text-gray-500 bg-orange-50/50 p-2 rounded">
                                     <i class="fa-solid fa-gift text-orange-400 mt-0.5"></i>
                                     <span>驚喜亮點：按摩結束後通常會招待<strong>芒果糯米飯</strong>或精緻泰式點心，非常好吃！</span>
                                 </div>
-                                <p class="text-[10px] text-gray-400">
-                                    <i class="fa-solid fa-check text-green-500 mr-1"></i> 
-                                    <strong>務必預約</strong>：生意很好，建議提前用 Line 或 FB 預訂雙人房 (Couple Room)。
-                                </p>
                             </div>
                         </div>
                     </div>
                     <div class="relative pl-0">
-                        <div class="timeline-dot bg-yellow-500 border-yellow-100"></div>
-                        <div class="info-card py-3 px-4 border-yellow-200 bg-yellow-50/20">
-                            <div class="font-bold text-gray-800 mb-1">20:00 晚餐：Ginger Farm Kitchen</div>
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-yellow-500 border-yellow-100"></div>
+                        <div class="bg-white rounded-xl p-5 shadow-sm border border-yellow-200 bg-yellow-50/20 mb-4">
+                            <div class="font-bold text-gray-800 mb-1">
+                                20:00 晚餐：Ginger Farm Kitchen
+                                <a href="https://www.google.com/maps/search/?api=1&query=Ginger+Farm+Kitchen+One+Nimman" target="_blank" class="text-gray-400 hover:text-yellow-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                            </div>
                             <p class="text-xs text-gray-500 mb-2">位於 One Nimman 商場內，連續多年米其林必比登推薦。主打「產地到餐桌」的有機料理，裝潢是鄉村田園風，非常漂亮。</p>
                             <div class="bg-white p-2 rounded border border-yellow-100">
                                 <p class="text-xs font-bold text-yellow-700 mb-1">🍴 必點推薦：</p>
@@ -472,141 +577,77 @@
         </div>
 
         <!-- ================= DAY 2 ================= -->
-        <div id="view-day2" class="view-section hidden">
-            <div class="flex justify-between items-end mb-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-900">Day 2 (12/03 三)</h2>
-                    <p class="text-sm text-gray-500">烹飪 & 夜市</p>
-                </div>
-                <button onclick="openGoogleMaps('day2')" class="text-xs bg-gray-200 hover:bg-gray-300 px-3 py-1.5 rounded-lg font-bold text-gray-600 transition active:scale-95">地圖</button>
-            </div>
-
-            <div class="day-intro">
-                <i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>
-                今天的主題是<strong>「在地五感體驗」</strong>。早晨用瑜伽喚醒身體，中午走進有機農場親手做料理，下午在清邁大學的絕美湖畔發呆看夕陽，最後融入當地大學生的夜市生活。
-            </div>
-
-            <div class="timeline-container">
+        <div id="view-day2" class="view-section hidden max-w-3xl mx-auto pb-24 px-4 pt-4">
+            <div class="flex justify-between items-end mb-4"><div><h2 class="text-2xl font-bold text-gray-900">Day 2 (12/03 三)</h2><p class="text-sm text-gray-500">烹飪 & 夜市</p></div><button onclick="openGoogleMaps('day2')" class="text-xs bg-gray-200 hover:bg-gray-300 px-3 py-1.5 rounded-lg font-bold text-gray-600 transition active:scale-95 no-print">地圖</button></div>
+            <div class="bg-gray-100/70 p-3 rounded-lg text-sm text-gray-600 mb-6 border border-gray-200 leading-relaxed"><i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>今天的主題是<strong>「在地五感體驗」</strong>。早晨用瑜伽喚醒身體，中午走進有機農場親手做料理，下午在清邁大學的絕美湖畔發呆看夕陽，最後融入當地大學生的夜市生活。</div>
+            <div class="relative pl-6 border-l-2 border-gray-200 ml-3 space-y-8 pb-8">
+                <div class="relative"><div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-brand-500 border-brand-100"></div><div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4"><h3 class="font-bold text-gray-800">
+                    09:00 晨間瑜伽
+                    <a href="https://www.google.com/maps/search/?api=1&query=Yoga+Ananda+Chiang+Mai" target="_blank" class="text-gray-400 hover:text-green-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                </h3><p class="text-xs text-gray-500 mt-1">Yoga Ananda Chiang Mai。位於寧靜巷弄中的專業瑜伽教室，用伸展開始美好的一天。</p></div></div>
                 <div class="relative">
-                    <div class="timeline-dot bg-brand-500 border-brand-100"></div>
-                    <div class="info-card py-3">
-                        <h3 class="font-bold text-gray-800">09:00 晨間瑜伽</h3>
-                        <p class="text-xs text-gray-500 mt-1">Yoga Ananda Chiang Mai。位於寧靜巷弄中的專業瑜伽教室，用伸展開始美好的一天。</p>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <div class="timeline-dot bg-orange-400 border-orange-100"></div>
-                    <div class="info-card border-orange-200 bg-orange-50/30">
-                        <div class="flex justify-between items-center mb-3">
-                            <h3 class="font-bold text-orange-800">Grandma's Cooking School</h3>
-                            <span class="text-xs font-bold bg-white border border-orange-200 text-orange-600 px-2 py-1 rounded">11:30 - 15:45</span>
-                        </div>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-orange-400 border-orange-100"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-200 bg-orange-50/30 mb-4">
+                        <div class="flex justify-between items-center mb-3"><h3 class="font-bold text-orange-800">
+                            Grandma's Cooking School
+                            <a href="https://www.google.com/maps/search/?api=1&query=Grandma's+Home+Cooking+School" target="_blank" class="text-gray-400 hover:text-orange-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                        </h3><span class="text-xs font-bold bg-white border border-orange-200 text-orange-600 px-2 py-1 rounded">11:30 - 15:45</span></div>
                         <div class="space-y-3 text-sm text-gray-700">
-                            <p class="text-xs text-gray-500 leading-relaxed">
-                                不只是學做菜，更是一場食農教育。教室位於郊區的有機農場，環境非常優美，可以親自去農場採摘香料、撿雞蛋，體驗自給自足的樂趣。
-                            </p>
+                            <p class="text-xs text-gray-500 leading-relaxed">不只是學做菜，更是一場食農教育。教室位於郊區的有機農場，環境非常優美，可以親自去農場採摘香料、撿雞蛋，體驗自給自足的樂趣。</p>
                             <ul class="space-y-1.5 text-xs text-gray-600 bg-white p-3 rounded-lg border border-orange-100">
-                                <li class="flex gap-2"><span class="font-mono text-orange-400">11:30</span> 飯店接送，先去當地市場認識泰國香料。</li>
-                                <li class="flex gap-2"><span class="font-mono text-orange-400">13:30</span> 抵達農場，參觀並採摘食材。</li>
-                                <li class="flex gap-2"><span class="font-mono text-orange-400">14:00</span> 烹飪實作：冬陰功、綠咖哩雞、芒果糯米飯。</li>
-                                <li class="flex gap-2"><span class="font-mono text-orange-400">15:45</span> 享用自己做的午餐，結束送回飯店。</li>
+                                <li class="flex gap-2"><span class="font-mono text-orange-400">11:30</span> 飯店接送至 Stay with Nimman。</li>
+                                <li class="flex gap-2"><span class="font-mono text-orange-400">12:15</span> Charoen Charoen 市場導覽，認識香料。</li>
+                                <li class="flex gap-2"><span class="font-mono text-orange-400">13:00</span> 抵達學校，迎賓飲料與小吃。</li>
+                                <li class="flex gap-2"><span class="font-mono text-orange-400">13:35</span> 有機農場導覽，採摘新鮮食材。</li>
+                                <li class="flex gap-2"><span class="font-mono text-orange-400">14:00</span> 烹飪實作：冬陰功、炒河粉、綠咖哩雞、芒果糯米飯。</li>
+                                <li class="flex gap-2"><span class="font-mono text-orange-400">15:45</span> 行程結束，送回飯店。</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-
                 <div class="relative">
-                    <div class="timeline-dot bg-teal-500 border-teal-100"></div>
-                    <div class="info-card bg-teal-50/30 border-teal-200">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-teal-900">17:00 昂格力水庫 (Ang Kaew)</h3>
-                            <span class="text-xs font-bold bg-white border border-teal-200 text-teal-600 px-2 py-0.5 rounded">最美夕陽</span>
-                        </div>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-teal-500 border-teal-100"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-teal-200 bg-teal-50/30 mb-4">
+                        <div class="flex justify-between items-center mb-2"><h3 class="font-bold text-teal-900">
+                            17:00 昂格力水庫 (Ang Kaew)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Ang+Kaew+Reservoir" target="_blank" class="text-gray-400 hover:text-teal-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                        </h3><span class="text-xs font-bold bg-white border border-teal-200 text-teal-600 px-2 py-0.5 rounded">最美夕陽</span></div>
                         <div class="space-y-3 text-sm text-gray-700">
-                            <p class="text-xs text-gray-500 leading-relaxed">
-                                隱身於清邁大學校園內的蓄水池，背後就是素帖山 (Doi Suthep)。這裡不是傳統觀光景點，而是清邁年輕人放鬆的後花園。傍晚時分，湖面平靜如鏡，倒映著山景與夕陽，被譽為「清邁最 Chill 的角落」。
-                            </p>
-                            
+                            <p class="text-xs text-gray-500 leading-relaxed">隱身於清邁大學校園內的蓄水池，背後就是素帖山 (Doi Suthep)。這裡不是傳統觀光景點，而是清邁年輕人放鬆的後花園。傍晚時分，湖面平靜如鏡，倒映著山景與夕陽。</p>
                             <div class="bg-white p-3 rounded-lg border border-teal-100">
-                                <p class="text-xs font-bold text-teal-700 mb-2 border-b border-teal-50 pb-1">
-                                    📸 必做清單：
-                                </p>
+                                <p class="text-xs font-bold text-teal-700 mb-2 border-b border-teal-50 pb-1">📸 必做清單：</p>
                                 <ul class="space-y-2 text-xs text-gray-600">
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-camera text-teal-500 mt-0.5"></i>
-                                        <span><strong>堤壩漫步</strong>：走在長長的堤防上，背景是壯闊的山水，隨手拍都是雜誌封面等級的美照。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-mug-hot text-orange-400 mt-0.5"></i>
-                                        <span><strong>湖畔咖啡</strong>：旁邊有間 <strong>Good Goods</strong> 玻璃屋咖啡廳，買杯飲料坐在草地上發呆、看當地人遛狗，非常療癒。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-music text-purple-400 mt-0.5"></i>
-                                        <span><strong>感受青春</strong>：運氣好的話，會遇到大學生社團在草地上彈吉他唱歌，氛圍感拉滿。</span>
-                                    </li>
+                                    <li><strong>堤壩漫步</strong>：走在長長的堤防上，背景是壯闊的山水，隨手拍都是雜誌封面等級的美照。</li>
+                                    <li><strong>湖畔咖啡</strong>：旁邊有間 <strong>Good Goods</strong> 玻璃屋咖啡廳，買杯飲料坐在草地上發呆、看當地人遛狗，非常療癒。</li>
+                                    <li><strong>感受青春</strong>：運氣好的話，會遇到大學生社團在草地上彈吉他唱歌，氛圍感拉滿。</li>
                                 </ul>
                             </div>
-                            
-                            <p class="text-[10px] text-gray-400 italic">
-                                <i class="fa-solid fa-location-dot mr-1"></i> 進清邁大學後可搭乘電動接駁車，或直接叫 Bolt 定位 "Ang Kaew Reservoir"。
-                            </p>
                         </div>
                     </div>
                 </div>
-
                 <div class="relative">
-                    <div class="timeline-dot bg-purple-500 border-purple-100"></div>
-                    <div class="info-card border-purple-100 bg-purple-50/30">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-purple-900">19:00 馬琳夜市 (Malin Plaza)</h3>
-                            <span class="text-xs font-bold bg-white border border-purple-200 text-purple-600 px-2 py-0.5 rounded">大學生商圈</span>
-                        </div>
-                        
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-purple-500 border-purple-100"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-purple-100 bg-purple-50/30 mb-4">
+                        <div class="flex justify-between items-center mb-2"><h3 class="font-bold text-purple-900">
+                            19:00 馬琳夜市 (Malin Plaza)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Malin+Plaza+Chiang+Mai" target="_blank" class="text-gray-400 hover:text-purple-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                        </h3><span class="text-xs font-bold bg-white border border-purple-200 text-purple-600 px-2 py-0.5 rounded">大學生商圈</span></div>
                         <div class="space-y-3 text-sm text-gray-700">
-                            <p class="text-xs text-gray-500 leading-relaxed">
-                                位於清邁大學正門對面，主要客群是當地大學生，因此價格非常親民（也就是俗稱的「銅板價」）。這裡少了觀光客的喧囂，多了年輕人的流行活力。
-                            </p>
-
-                            <!-- Food Section -->
+                            <p class="text-xs text-gray-500 leading-relaxed">位於清邁大學正門對面，主要客群是當地大學生，因此價格非常親民（也就是俗稱的「銅板價」）。這裡少了觀光客的喧囂，多了年輕人的流行活力。</p>
                             <div class="bg-white p-2.5 rounded-lg border border-purple-100">
-                                <p class="text-xs font-bold text-purple-700 mb-2 border-b border-purple-50 pb-1">
-                                    🍴 大學生最愛美食：
-                                </p>
+                                <p class="text-xs font-bold text-purple-700 mb-2 border-b border-purple-50 pb-1">🍴 大學生最愛美食：</p>
                                 <ul class="text-xs text-gray-600 space-y-2">
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-fire-burner text-red-400 mt-0.5"></i>
-                                        <span><strong>日式火鍋/燒烤</strong>：這裡有很多露天火鍋攤，價格便宜份量大，是泰國學生聚餐首選。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-fish text-orange-400 mt-0.5"></i>
-                                        <span><strong>平價壽司</strong>：一貫只要 5-10 泰銖，種類超級多，可以自己夾滿一整盒。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-ice-cream text-pink-400 mt-0.5"></i>
-                                        <span><strong>巨無霸冰酥 (Bingsoo)</strong>：飯後必點！份量驚人且水果堆得像山一樣的韓式刨冰。</span>
-                                    </li>
+                                    <li><strong>日式火鍋/燒烤</strong>：這裡有很多露天火鍋攤，價格便宜份量大，是泰國學生聚餐首選。</li>
+                                    <li><strong>平價壽司</strong>：一貫只要 5-10 泰銖，種類超級多，可以自己夾滿一整盒。</li>
+                                    <li><strong>巨無霸冰酥 (Bingsoo)</strong>：飯後必點！份量驚人且水果堆得像山一樣的韓式刨冰。</li>
                                 </ul>
                             </div>
-
-                            <!-- Shopping Section -->
                             <div class="bg-white p-2.5 rounded-lg border border-purple-100">
-                                <p class="text-xs font-bold text-purple-700 mb-2 border-b border-purple-50 pb-1">
-                                    🛍️ 挖寶攻略：
-                                </p>
+                                <p class="text-xs font-bold text-purple-700 mb-2 border-b border-purple-50 pb-1">🛍️ 挖寶攻略：</p>
                                 <ul class="text-xs text-gray-600 space-y-2">
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-shirt text-blue-400 mt-0.5"></i>
-                                        <span><strong>韓風服飾</strong>：衣服款式比古城夜市流行很多，且通常標價都在 100-200 銖左右。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-mobile-screen text-gray-600 mt-0.5"></i>
-                                        <span><strong>手機周邊</strong>：手機殼、貼膜非常便宜，款式眼花撩亂。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-wand-magic-sparkles text-purple-400 mt-0.5"></i>
-                                        <span><strong>露天美甲</strong>：有很多平價美甲攤位，技術不錯又快速。</span>
-                                    </li>
+                                    <li><strong>韓風服飾</strong>：衣服款式比古城夜市流行很多，且通常標價都在 100-200 銖左右。</li>
+                                    <li><strong>手機周邊</strong>：手機殼、貼膜非常便宜，款式眼花撩亂。</li>
+                                    <li><strong>露天美甲</strong>：有很多平價美甲攤位，技術不錯又快速。</li>
                                 </ul>
                             </div>
                         </div>
@@ -616,163 +657,110 @@
         </div>
 
         <!-- ================= DAY 3 ================= -->
-        <div id="view-day3" class="view-section hidden">
-            <div class="flex justify-between items-end mb-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-900">Day 3 (12/04 四)</h2>
-                    <p class="text-sm text-gray-500">瀑布冒險 (郊區包車)</p>
-                </div>
-                <button onclick="openGoogleMaps('day3')" class="text-xs bg-gray-200 hover:bg-gray-300 px-3 py-1.5 rounded-lg font-bold text-gray-600 transition active:scale-95">地圖</button>
-            </div>
-
-            <div class="day-intro">
-                <i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>
-                往郊區出發！今天將體驗全世界少有的<strong>「粘粘瀑布」</strong>，神奇的石灰岩地形讓你像蜘蛛人一樣赤腳攀爬瀑布，好玩又安全。
-            </div>
-
-            <div class="timeline-container">
-                <div class="relative">
-                    <div class="timeline-dot bg-blue-500"></div>
-                    <div class="info-card py-3">
-                        <h3 class="font-bold text-gray-800">08:00 包車出發</h3>
-                        <p class="text-xs text-gray-500 mt-1">前往 Mae Rim 區，沿途風景優美。</p>
-                    </div>
-                </div>
-                <div class="relative">
-                    <div class="timeline-dot bg-green-500 border-green-100"></div>
-                    <div class="info-card py-3">
-                        <h3 class="font-bold text-gray-800">08:45 大象粑粑紙公園</h3>
-                        <p class="text-xs text-gray-500 mt-1">用大象便便做成紙張！園區乾淨可愛，可以體驗環保造紙DIY。</p>
-                    </div>
-                </div>
-                <div class="relative">
-                    <div class="timeline-dot bg-teal-400 border-teal-100"></div>
-                    <div class="info-card border-teal-200 bg-teal-50/30">
-                        <h3 class="font-bold text-teal-800">11:00 粘粘瀑布 (Sticky Waterfalls)</h3>
-                        <p class="text-sm text-gray-600 mt-1">重點行程！這裡的石頭表面粗糙不滑，記得帶短褲或泳衣，直接赤腳享受攀爬樂趣。</p>
-                    </div>
-                </div>
+        <div id="view-day3" class="view-section hidden max-w-3xl mx-auto pb-24 px-4 pt-4">
+            <div class="flex justify-between items-end mb-4"><div><h2 class="text-2xl font-bold text-gray-900">Day 3 (12/04 四)</h2><p class="text-sm text-gray-500">瀑布冒險</p></div><button onclick="openGoogleMaps('day3')" class="text-xs bg-gray-200 hover:bg-gray-300 px-3 py-1.5 rounded-lg font-bold text-gray-600 transition active:scale-95 no-print">地圖</button></div>
+            <div class="bg-gray-100/70 p-3 rounded-lg text-sm text-gray-600 mb-6 border border-gray-200 leading-relaxed"><i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>郊區冒險！體驗神奇的<strong>「粘粘瀑布」</strong>。</div>
+            <div class="relative pl-6 border-l-2 border-gray-200 ml-3 space-y-8 pb-8">
+                <div class="relative"><div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-blue-500"></div><div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4 py-3"><h3 class="font-bold text-gray-800">
+                    08:00 包車出發
+                </h3><p class="text-xs text-gray-500 mt-1">前往 Mae Rim 區。</p></div></div>
+                <div class="relative"><div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-green-500 border-green-100"></div><div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4 py-3"><h3 class="font-bold text-gray-800">
+                    08:45 大象粑粑紙公園
+                    <a href="https://www.google.com/maps/search/?api=1&query=Elephant+Poopoopaper+Park" target="_blank" class="text-gray-400 hover:text-green-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                </h3><p class="text-xs text-gray-500 mt-1">環保造紙DIY。</p></div></div>
+                <div class="relative"><div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-teal-400 border-teal-100"></div><div class="bg-white rounded-xl p-5 shadow-sm border border-teal-200 bg-teal-50/30 mb-4"><h3 class="font-bold text-teal-800">
+                    11:00 粘粘瀑布 (Sticky Waterfalls)
+                    <a href="https://www.google.com/maps/search/?api=1&query=Namtok+Bua+Tong+(Sticky+Waterfalls)" target="_blank" class="text-gray-400 hover:text-teal-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                </h3><p class="text-sm text-gray-600 mt-1">重點行程！石頭表面不滑，可赤腳攀爬。</p></div></div>
             </div>
         </div>
 
-        <!-- ================= DAY 4 (BIRTHDAY) ================= -->
-        <div id="view-day4" class="view-section hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-pink-600 flex items-center gap-2">
-                    Day 4 <i class="fa-solid fa-cake-candles animate-bounce"></i>
-                </h2>
-                <button onclick="openGoogleMaps('day4')" class="text-xs bg-pink-50 text-pink-500 px-2 py-1 rounded border border-pink-100 transition active:scale-95">地圖</button>
-            </div>
-            
-            <div class="day-intro border-pink-200 bg-pink-50/50 text-pink-800">
-                <i class="fa-solid fa-heart text-pink-400 mr-2"></i>
-                <strong>生日快樂！</strong>今天行程充滿儀式感。上午在森林系藝術村享受慢時光，下午體驗刺激的實彈射擊釋放壓力，晚上入住五星飯店，並在百年古蹟中享用特務主題的生日大餐。
-            </div>
-
-            <div class="timeline-container">
+        <!-- ================= DAY 4 ================= -->
+        <div id="view-day4" class="view-section hidden max-w-3xl mx-auto pb-24 px-4 pt-4">
+            <div class="flex justify-between items-center mb-4"><h2 class="text-2xl font-bold text-pink-600 flex items-center gap-2">Day 4 (12/05 五) <i class="fa-solid fa-cake-candles animate-bounce"></i></h2><button onclick="openGoogleMaps('day4')" class="text-xs bg-pink-50 text-pink-500 px-2 py-1 rounded border border-pink-100 transition active:scale-95 no-print">地圖</button></div>
+            <div class="bg-pink-50/50 p-3 rounded-lg text-sm mb-6 border border-pink-200 leading-relaxed text-pink-800"><i class="fa-solid fa-heart text-pink-400 mr-2"></i><strong>生日快樂！</strong>今天行程充滿儀式感。上午在森林系藝術村享受慢時光，下午體驗刺激的實彈射擊釋放壓力，晚上入住五星飯店，並在百年古蹟中享用特務主題的生日大餐。</div>
+            <div class="relative pl-6 border-l-2 border-gray-200 ml-3 space-y-8 pb-8">
                 <div class="relative">
-                    <div class="timeline-dot border-gray-200"></div>
-                    <div class="info-card">
-                        <h3 class="font-bold text-gray-800 mb-2">11:00 Baan Kang Wat 藝術村</h3>
-                        <p class="text-xs text-gray-500 mb-3">
-                            被譽為「清邁最美文創聚落」。像一個森林裡的小村莊，由數棟半木造老屋圍繞著圓形劇場，氛圍非常 Chill，每個角落都好拍。
-                        </p>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content border-gray-200"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4">
+                        <h3 class="font-bold text-gray-800 mb-2">
+                            11:00 Baan Kang Wat 藝術村
+                            <a href="https://www.google.com/maps/search/?api=1&query=Baan+Kang+Wat" target="_blank" class="text-gray-400 hover:text-green-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                        </h3>
+                        <p class="text-xs text-gray-500 mb-3">被譽為「清邁最美文創聚落」。像一個森林裡的小村莊，由數棟半木造老屋圍繞著圓形劇場，氛圍非常 Chill，每個角落都好拍。</p>
                         <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                              <p class="text-xs font-bold text-gray-700 mb-1">🌲 必逛小店推薦：</p>
                              <ul class="text-xs text-gray-600 space-y-2">
-                                 <li class="flex items-start gap-2">
-                                     <i class="fa-solid fa-book text-gray-400 mt-0.5"></i>
-                                     <span><strong>Mahasamut Library</strong>：雖然是圖書館但也是咖啡廳，可以點一杯飲料，在書堆中休息。</span>
-                                 </li>
-                                 <li class="flex items-start gap-2">
-                                     <i class="fa-solid fa-bread-slice text-orange-400 mt-0.5"></i>
-                                     <span><strong>Obchoei Original Homemade</strong>：在地小有名氣的烘焙店，適合在這裡享用生日早午餐。</span>
-                                 </li>
+                                 <li><strong>Mahasamut Library</strong>：雖然是圖書館但也是咖啡廳，可以點一杯飲料，在書堆中休息。</li>
+                                 <li><strong>Obchoei Original Homemade</strong>：在地小有名氣的烘焙店，適合在這裡享用生日早午餐。</li>
                              </ul>
                         </div>
                     </div>
                 </div>
                 
                 <div class="relative">
-                    <div class="timeline-dot bg-red-500 border-red-100"></div>
-                    <div class="info-card border-red-100 bg-red-50/10">
-                        <h3 class="font-bold text-gray-800">13:30 實彈射擊體驗</h3>
-                        <p class="text-xs text-gray-400 font-mono mb-1">333 Shooting Range (塔佩門分店)</p>
-                        <p class="text-sm text-gray-600 mt-1 mb-2">
-                            難得的機會！這是一家正規的室內靶場。會有專業教練一對一指導，非常安全。
-                        </p>
-                        <p class="text-xs text-gray-500">
-                            <i class="fa-solid fa-gun text-red-400 mr-1"></i>
-                            可以選擇 .22, .38, 9mm 或散彈槍。體驗真槍實彈的後座力與命中紅心的成就感！
-                        </p>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <div class="timeline-dot border-gray-200"></div>
-                    <div class="info-card">
-                        <h3 class="font-bold text-gray-800">16:00 Check-in: Melia Chiang Mai</h3>
-                        <p class="text-xs text-gray-500">
-                            換飯店到古城河畔的五星級 Melia。這間飯店融合了西班牙與泰北蘭納風格。建議先到頂樓的 <strong>Mai The Sky Bar</strong> (清邁最高酒吧) 看看夕陽，再回房間梳妝打扮準備晚餐。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- 晚餐 -->
-                <div class="relative">
-                    <div class="timeline-dot bg-pink-500 border-pink-200"></div>
-                    <div class="bg-white rounded-2xl shadow-md border-l-4 border-l-pink-500 p-5 mb-4">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h3 class="font-bold text-gray-900 text-lg">The Service 1921</h3>
-                                <p class="text-xs text-pink-500 font-bold mt-0.5">Anantara Resort (百年建築)</p>
-                            </div>
-                            <span class="bg-pink-100 text-pink-600 text-[10px] px-2 py-1 rounded font-bold">19:00 預訂</span>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-red-500 border-red-100"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-red-100 bg-red-50/10 mb-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-gray-800">
+                                13:30 實彈射擊體驗
+                                <a href="https://www.google.com/maps/search/?api=1&query=333+Shooting+Range+Thaphae" target="_blank" class="text-gray-400 hover:text-red-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                            </h3>
+                            <span class="text-xs font-bold bg-white border border-red-200 text-red-600 px-2 py-1 rounded">壽星紓壓推薦</span>
                         </div>
-                        
-                        <div class="space-y-3">
-                            <p class="text-xs text-gray-600 leading-relaxed">
-                                這棟建築建於 1921 年，前身是英國領事館。餐廳延續了這段歷史，打造成<strong>「特務情報機關」</strong>主題。進門需要按機關開門，菜單設計成「最高機密文件」，服務生也都穿著特務風格制服，非常有趣！
-                            </p>
-                            
-                            <div class="bg-pink-50 rounded-lg p-3 border border-pink-100 text-sm text-gray-700">
-                                <p class="text-xs font-bold text-pink-600 mb-1">🎂 生日驚喜安排:</p>
-                                <ul class="space-y-1 text-xs">
-                                    <li><i class="fa-solid fa-check text-pink-400 mr-1"></i> 已預訂二樓迴廊的安靜靠窗位，氣氛浪漫。</li>
-                                    <li><i class="fa-solid fa-check text-pink-400 mr-1"></i> 安排餐後 Mini Cake 驚喜。</li>
+                        <div class="space-y-4 text-sm text-gray-700">
+                            <p class="text-xs text-gray-500 leading-relaxed">難得的機會！這是一家正規且評價極高的室內靶場。對於新手非常友善，全程會有專業教練<strong>一對一</strong>在旁指導握槍姿勢與安全守則，絕對安全，不用擔心後座力受傷。</p>
+                            <div class="bg-white p-3 rounded-lg border border-red-100">
+                                <p class="text-xs font-bold text-red-700 mb-2">🔫 體驗亮點：</p>
+                                <ul class="space-y-2 text-xs text-gray-600">
+                                    <li><strong>多種槍械選擇</strong>：從後座力較小的 .22 手槍，到震撼力十足的 9mm、.38 左輪，甚至散彈槍都有。建議初學者選 <strong>.22 + 9mm 套餐</strong>，循序漸進。</li>
+                                    <li><strong>帥氣側拍服務</strong>：這裡的工作人員拍照技術一流！會幫忙拍下射擊時的火花、彈殼飛出的瞬間 (還有慢動作影片)，發 IG 限動超帥。</li>
                                 </ul>
                             </div>
+                            <p class="text-[10px] text-gray-400 italic">⚠️ 務必攜帶護照正本。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative"><div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content border-gray-200"></div><div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4"><h3 class="font-bold text-gray-800">
+                    16:00 Check-in: Melia Chiang Mai
+                    <a href="https://www.google.com/maps/search/?api=1&query=Melia+Chiang+Mai" target="_blank" class="text-gray-400 hover:text-pink-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                </h3><p class="text-xs text-gray-500">換飯店到古城河畔五星級 Melia。這間飯店融合了西班牙與泰北蘭納風格。建議先到頂樓的 <strong>Mai The Sky Bar</strong> (清邁最高酒吧) 看看夕陽，再回房間梳妝打扮準備晚餐。</p></div></div>
+                
+                <div class="relative">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-pink-500 border-pink-200"></div>
+                    <div class="bg-white rounded-2xl shadow-md border-l-4 border-l-pink-500 p-5 mb-4">
+                        <div class="flex justify-between items-start mb-3"><div><h3 class="font-bold text-gray-900 text-lg">
+                            The Service 1921
+                            <a href="https://www.google.com/maps/search/?api=1&query=The+Service+1921+Restaurant" target="_blank" class="text-gray-400 hover:text-pink-600 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                        </h3><p class="text-xs text-pink-500 font-bold mt-0.5">Anantara Resort (百年建築)</p></div><span class="bg-pink-100 text-pink-600 text-[10px] px-2 py-1 rounded font-bold">19:00 預訂</span></div>
+                        <div class="space-y-3">
+                            <p class="text-xs text-gray-600 leading-relaxed">這棟建築建於 1921 年，前身是英國領事館。餐廳延續了這段歷史，打造成<strong>「特務情報機關」</strong>主題。進門需要按機關開門，菜單設計成「最高機密文件」，服務生也都穿著特務風格制服，非常有趣！</p>
+                            <div class="bg-pink-50 rounded-lg p-3 border border-pink-100 text-sm text-gray-700">
+                                <p class="text-xs font-bold text-pink-600 mb-1">🎂 生日驚喜安排:</p>
+                                <ul class="space-y-1 text-xs"><li><i class="fa-solid fa-check text-pink-400 mr-1"></i> 已預訂二樓迴廊的安靜靠窗位，氣氛浪漫。</li><li><i class="fa-solid fa-check text-pink-400 mr-1"></i> 安排餐後 Mini Cake 驚喜。</li></ul>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="relative">
-                    <div class="timeline-dot bg-indigo-600 border-indigo-200"></div>
-                    <div class="info-card border-indigo-100 bg-indigo-50/20">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-gray-800">21:30 Bar.San.</h3>
-                            <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">職人調酒</span>
-                        </div>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-indigo-600 border-indigo-200"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-indigo-100 bg-indigo-50/20 mb-4">
+                        <div class="flex justify-between items-center mb-2"><h3 class="font-bold text-gray-800">
+                            21:30 Bar.San.
+                            <a href="https://www.google.com/maps/search/?api=1&query=Bar+San+Chiang+Mai" target="_blank" class="text-gray-400 hover:text-indigo-600 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                        </h3><span class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">職人調酒</span></div>
                         <div class="space-y-3">
-                            <p class="text-xs text-gray-500 leading-relaxed">
-                                這不是一間普通的酒吧，更像是一間<strong>「調酒實驗室」</strong>。店內只有一條長吧台，風格極簡冷冽 (Minimalist)。沒有吵雜的音樂，只有調酒師鑿冰的聲音，非常適合生日夜的最後，兩個人安靜地微醺、聊天。
-                            </p>
+                            <p class="text-xs text-gray-500 leading-relaxed">這不是一間普通的酒吧，更像是一間<strong>「調酒實驗室」</strong>。店內只有一條長吧台，風格極簡冷冽 (Minimalist)。沒有吵雜的音樂，只有調酒師鑿冰的聲音，非常適合生日夜的最後，兩個人安靜地微醺、聊天。</p>
                             <div class="bg-white p-2.5 rounded border border-indigo-100">
                                 <p class="text-xs font-bold text-indigo-700 mb-1.5">🍸 推薦酒單：</p>
                                 <ul class="text-xs text-gray-600 space-y-2">
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-lemon text-yellow-400 mt-0.5"></i>
-                                        <span><strong>Signature Gin & Tonic</strong>：這裡的琴酒收藏非常豐富，調酒師會加入泰國獨有的香料或水果，清爽又有層次。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-martini-glass-citrus text-indigo-400 mt-0.5"></i>
-                                        <span><strong>特調 (Customized)</strong>：直接告訴調酒師你喜歡的口味（酸/甜/花香/木質），他們的客製化功力一流。</span>
-                                    </li>
+                                    <li><strong>Signature Gin & Tonic</strong>：這裡的琴酒收藏非常豐富，調酒師會加入泰國獨有的香料或水果，清爽又有層次。</li>
+                                    <li><strong>客製化特調 (Customized)</strong>：直接告訴調酒師你喜歡的口味（酸/甜/花香/木質），他們的客製化功力一流。</li>
                                 </ul>
                             </div>
-                            <p class="text-[10px] text-gray-400 italic">
-                                <i class="fa-solid fa-location-dot mr-1"></i> 就在 Melia 飯店步行距離內，喝完可以直接散步回去。
-                            </p>
+                            <p class="text-[10px] text-gray-400 italic"><i class="fa-solid fa-location-dot mr-1"></i> 就在 Melia 飯店步行距離內，喝完可以直接散步回去。</p>
                         </div>
                     </div>
                 </div>
@@ -780,118 +768,109 @@
         </div>
 
         <!-- ================= DAY 5 ================= -->
-        <div id="view-day5" class="view-section hidden">
+        <div id="view-day5" class="view-section hidden max-w-3xl mx-auto pb-24 px-4 pt-4">
             <h2 class="text-2xl font-bold text-gray-900 mb-4">Day 5 (12/06 六)</h2>
-            
-            <div class="day-intro">
-                <i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>
-                週末限定！早上逛清邁<strong>最有質感</strong>的農夫市集，下午漫步古城參拜古蹟，晚上再去最經典的週六夜市人擠人，感受熱鬧氛圍。
-            </div>
-
-            <div class="timeline-container">
+            <div class="bg-gray-100/70 p-3 rounded-lg text-sm text-gray-600 mb-6 border border-gray-200 leading-relaxed"><i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>週末限定！早上逛清邁<strong>最有質感</strong>的農夫市集，下午漫步古城參拜古蹟，晚上再去最經典的週六夜市人擠人，感受熱鬧氛圍。</div>
+            <div class="relative pl-6 border-l-2 border-gray-200 ml-3 space-y-8 pb-8">
+                <div class="relative"><div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content"></div><div class="bg-white rounded-xl p-5 shadow-sm border border-green-200 bg-green-50/30 mb-4"><div class="flex justify-between items-center mb-3"><h3 class="font-bold text-green-800">
+                    09:00 Jing Jai Market (真心市集)
+                    <a href="https://www.google.com/maps/search/?api=1&query=Jing+Jai+Market+Chiang+Mai" target="_blank" class="text-gray-400 hover:text-green-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                </h3><span class="text-xs font-bold bg-white border border-green-200 text-green-600 px-2 py-1 rounded">週末必逛</span></div><div class="space-y-3 text-sm text-gray-700"><p class="text-xs text-gray-500 leading-relaxed">清邁目前最火紅的文青市集！主打有機、環保 (No Plastic) 與手作。環境規劃得像公園一樣舒服，還有現場民謠演奏，完全不同於傳統夜市的喧囂。</p><div class="bg-white p-3 rounded-lg border border-green-100"><p class="text-xs font-bold text-green-700 mb-2">🍃 必逛亮點：</p><ul class="space-y-2 text-xs text-gray-600"><li><strong>農夫市集區</strong>：色彩繽紛的有機蔬果。推薦買一顆現剖椰子或綜合果昔，邊走邊喝。</li><li><strong>手作雜貨區</strong>：許多設計師駐點。泰北藍染衣物、手工編織包、文創小物，質感極佳且不易撞衫。</li><li><strong>行動咖啡車</strong>：找一家看起來順眼的咖啡車，點杯手沖，坐在樹蔭下聽音樂，非常愜意。</li></ul></div></div></div></div>
+                
+                <!-- Expanded Day 5 Afternoon -->
                 <div class="relative">
-                    <div class="timeline-dot"></div>
-                    <div class="info-card bg-green-50/30 border-green-200">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-orange-400 border-orange-100"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-200 bg-orange-50/30 mb-4">
                         <div class="flex justify-between items-center mb-3">
-                            <h3 class="font-bold text-green-800">09:00 Jing Jai Market (真心市集)</h3>
-                            <span class="text-xs font-bold bg-white border border-green-200 text-green-600 px-2 py-1 rounded">週末必逛</span>
+                            <h3 class="font-bold text-orange-800">13:30 古城經典漫遊</h3>
+                            <span class="text-xs font-bold bg-white border border-orange-200 text-orange-600 px-2 py-1 rounded">步行路線</span>
                         </div>
-                        <div class="space-y-3 text-sm text-gray-700">
-                            <p class="text-xs text-gray-500 leading-relaxed">
-                                清邁目前最火紅的文青市集！主打有機、環保 (No Plastic) 與手作。環境規劃得像公園一樣舒服，還有現場民謠演奏，完全不同於傳統夜市的喧囂。
-                            </p>
-                            <div class="bg-white p-3 rounded-lg border border-green-100">
-                                <p class="text-xs font-bold text-green-700 mb-2">🍃 必逛亮點：</p>
-                                <ul class="space-y-2 text-xs text-gray-600">
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-carrot text-orange-400 mt-0.5"></i>
-                                        <span><strong>農夫市集區</strong>：色彩繽紛的有機蔬果。推薦買一顆現剖椰子或綜合果昔，邊走邊喝。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-shirt text-blue-400 mt-0.5"></i>
-                                        <span><strong>手作雜貨區</strong>：許多設計師駐點。泰北藍染衣物、手工編織包、文創小物，質感極佳且不易撞衫。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-mug-hot text-green-600 mt-0.5"></i>
-                                        <span><strong>行動咖啡車</strong>：找一家看起來順眼的咖啡車，點杯手沖，坐在樹蔭下聽音樂，非常愜意。</span>
-                                    </li>
-                                </ul>
+                        <div class="space-y-6 text-sm text-gray-700">
+                            <!-- Stop 1 -->
+                            <div class="flex gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-2 h-2 rounded-full bg-orange-400 mt-1.5"></div>
+                                    <div class="w-0.5 h-full bg-orange-100 my-1"></div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-800 mb-1">
+                                        柴迪隆寺 (Wat Chedi Luang)
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Wat+Chedi+Luang" target="_blank" class="text-gray-400 hover:text-orange-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                                    </div>
+                                    <p class="text-xs text-gray-600 leading-relaxed">
+                                        蘭納王國最宏偉的佛塔，曾經歷大地震而崩塌。雖然頂端毀損，但那種殘缺的滄桑感非常震撼。
+                                        <br><span class="text-orange-600 font-bold">📸 拍照點</span>：記得繞到佛塔背面，那裡有幾隻倖存的守護大象雕像，非常有歷史感。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Stop 2 -->
+                            <div class="flex gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-2 h-2 rounded-full bg-orange-400 mt-1.5"></div>
+                                    <div class="w-0.5 h-full bg-orange-100 my-1"></div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-800 mb-1">
+                                        盼道寺 (Wat Phan Tao)
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Wat+Phan+Tao" target="_blank" class="text-gray-400 hover:text-orange-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                                    </div>
+                                    <p class="text-xs text-gray-600 leading-relaxed">
+                                        就在柴迪隆寺隔壁，是一座全柚木建造的黑色古樸寺廟，前身是皇室宮殿。黑色的木造建築配上金色的裝飾，在陽光下非常典雅莊嚴。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Stop 3 -->
+                            <div class="flex gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-2 h-2 rounded-full bg-orange-400 mt-1.5"></div>
+                                    <div class="w-0.5 h-full bg-orange-100 my-1"></div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-800 mb-1">
+                                        下午茶：Akha Ama Coffee
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Akha+Ama+Coffee+La+Fattoria" target="_blank" class="text-gray-400 hover:text-orange-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                                    </div>
+                                    <p class="text-xs text-gray-600 leading-relaxed">
+                                        (La Fattoria 分店) 清邁必喝！老闆是少數民族阿卡族人，致力推廣自家種植的咖啡豆。
+                                        <br>☕ <strong>必點</strong>：Manee Mana (黑咖啡+橙皮) 或 Dirty Latte，口感非常滑順。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Stop 4 -->
+                            <div class="flex gap-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-2 h-2 rounded-full bg-orange-400 mt-1.5"></div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-800 mb-1">
+                                        帕辛寺 (Wat Phra Singh)
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Wat+Phra+Singh" target="_blank" class="text-gray-400 hover:text-orange-500 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                                    </div>
+                                    <p class="text-xs text-gray-600 leading-relaxed">
+                                        古城內地位最崇高的寺廟，也是每年潑水節浴佛大典的起點。金碧輝煌的蘭納式建築代表作，主殿內的壁畫非常精緻，值得細細欣賞。
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Expanded Day 5 Afternoon -->
                 <div class="relative">
-                    <div class="timeline-dot bg-orange-400 border-orange-100"></div>
-                    <div class="info-card border-orange-200 bg-orange-50/30">
-                        <div class="flex justify-between items-center mb-3">
-                            <h3 class="font-bold text-orange-800">13:30 古城經典漫遊</h3>
-                            <span class="text-xs font-bold bg-white border border-orange-200 text-orange-600 px-2 py-1 rounded">步行路線</span>
-                        </div>
-                        <div class="space-y-4">
-                            <!-- Stop 1 -->
-                            <div class="flex gap-3">
-                                <div class="text-xs font-bold text-gray-400 font-mono w-10 pt-0.5">13:30</div>
-                                <div>
-                                    <div class="font-bold text-gray-800 text-sm">柴迪隆寺 (Wat Chedi Luang)</div>
-                                    <p class="text-xs text-gray-500 mt-1">清邁最高的蘭納式佛塔，曾經歷大地震而崩塌，有種殘缺的宏偉美感。記得繞到背面拍照。</p>
-                                </div>
-                            </div>
-                            <!-- Stop 2 -->
-                            <div class="flex gap-3">
-                                <div class="text-xs font-bold text-gray-400 font-mono w-10 pt-0.5">14:30</div>
-                                <div>
-                                    <div class="font-bold text-gray-800 text-sm">盼道寺 (Wat Phan Tao)</div>
-                                    <p class="text-xs text-gray-500 mt-1">就在旁邊，全柚木建造的古樸寺廟，氣氛寧靜。</p>
-                                </div>
-                            </div>
-                             <!-- Stop 3 -->
-                            <div class="flex gap-3">
-                                <div class="text-xs font-bold text-gray-400 font-mono w-10 pt-0.5">15:00</div>
-                                <div>
-                                    <div class="font-bold text-gray-800 text-sm">下午茶：Akha Ama Coffee</div>
-                                    <p class="text-xs text-gray-500 mt-1">La Fattoria 分店。必點招牌 Manee Mana (咖啡花特調)。</p>
-                                    <p class="text-[10px] text-gray-400 mt-0.5"><i class="fa-solid fa-lightbulb text-yellow-500"></i> 備案：Khun Kae's Juice Bar (果昔碗)。</p>
-                                </div>
-                            </div>
-                             <!-- Stop 4 -->
-                            <div class="flex gap-3">
-                                <div class="text-xs font-bold text-gray-400 font-mono w-10 pt-0.5">16:15</div>
-                                <div>
-                                    <div class="font-bold text-gray-800 text-sm">帕辛寺 (Wat Phra Singh)</div>
-                                    <p class="text-xs text-gray-500 mt-1">古城等級最高、香火最旺的寺廟，金碧輝煌的蘭納式建築。</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <div class="timeline-dot bg-purple-500"></div>
-                    <div class="info-card bg-purple-50/30 border-purple-200">
-                        <div class="flex justify-between items-center mb-3">
-                            <h3 class="font-bold text-purple-900">18:00 週六夜市 (Wualai Walking Street)</h3>
-                            <span class="text-xs font-bold bg-white border border-purple-200 text-purple-600 px-2 py-1 rounded">南門銀飾街</span>
-                        </div>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-purple-500"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-purple-200 bg-purple-50/30 mb-4">
+                        <div class="flex justify-between items-center mb-3"><h3 class="font-bold text-purple-900">
+                            18:00 週六夜市 (Wualai)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Wualai+Walking+Street" target="_blank" class="text-gray-400 hover:text-purple-600 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                        </h3><span class="text-xs font-bold bg-white border border-purple-200 text-purple-600 px-2 py-1 rounded">南門銀飾街</span></div>
                         <div class="space-y-3 text-sm text-gray-700">
-                            <p class="text-xs text-gray-500 leading-relaxed">
-                                位於清邁南門外的 Wualai Road，以前是打銀器的聚落。相比週日夜市，這裡的路比較窄，更能感受到摩肩擦踵的熱鬧氣氛。
-                            </p>
+                            <p class="text-xs text-gray-500 leading-relaxed">位於清邁南門外的 Wualai Road，以前是打銀器的聚落。相比週日夜市，這裡的路比較窄，更能感受到摩肩擦踵的熱鬧氣氛。</p>
                             <div class="bg-white p-3 rounded-lg border border-purple-100">
                                 <ul class="space-y-2 text-xs text-gray-600">
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-gem text-purple-400 mt-0.5"></i>
-                                        <span><strong>銀飾工藝</strong>：沿路有許多銀飾店和路邊攤，價格比百貨公司親切很多。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-gopuram text-purple-400 mt-0.5"></i>
-                                        <span><strong>銀廟 (Wat Sri Suphan)</strong>：夜市必訪！整座寺廟由銀鋁合金打造，晚上打燈後呈現魔幻的銀藍色，非常震撼。(註：女性僅能在殿外參觀/拍照)。</span>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-music text-purple-400 mt-0.5"></i>
-                                        <span><strong>街頭藝人</strong>：這裡有許多盲人樂團或傳統樂器表演，走累了可以停下來欣賞。</span>
-                                    </li>
+                                    <li><strong>銀飾工藝</strong>：沿路有許多銀飾店和路邊攤，價格比百貨公司親切很多。</li>
+                                    <li><strong>銀廟 (Wat Sri Suphan)</strong>：夜市必訪！整座寺廟由銀鋁合金打造，晚上打燈後呈現魔幻的銀藍色，非常震撼。(註：女性僅能在殿外參觀/拍照)。</li>
                                 </ul>
                             </div>
                         </div>
@@ -901,113 +880,50 @@
         </div>
 
         <!-- ================= DAY 6 ================= -->
-        <div id="view-day6" class="view-section hidden">
+        <div id="view-day6" class="view-section hidden max-w-3xl mx-auto pb-24 px-4 pt-4">
             <h2 class="text-2xl font-bold text-gray-900 mb-4">Day 6 (12/07 日)</h2>
-            
-            <div class="day-intro">
-                <i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>
-                清邁的最後時光。到最道地的市場把芒果乾、泰茶買齊，下午搭機前往曼谷，入住機場旁舒適飯店，為明日早班機做準備。
-            </div>
-
-            <div class="timeline-container">
+            <div class="bg-gray-100/70 p-3 rounded-lg text-sm text-gray-600 mb-6 border border-gray-200 leading-relaxed"><i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>清邁的最後時光。到最道地的市場把芒果乾、泰茶買齊，下午搭機前往曼谷，入住機場旁舒適飯店，為明日早班機做準備。</div>
+            <div class="relative pl-6 border-l-2 border-gray-200 ml-3 space-y-8 pb-8">
                 <div class="relative">
-                    <div class="timeline-dot"></div>
-                    <div class="info-card bg-yellow-50/30 border-yellow-200">
-                        <div class="flex justify-between items-center mb-3">
-                            <h3 class="font-bold text-yellow-800">10:00 瓦洛洛市場 (Warorot Market)</h3>
-                            <span class="text-xs font-bold bg-white border border-yellow-200 text-yellow-600 px-2 py-1 rounded">深度攻略</span>
-                        </div>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-yellow-200 bg-yellow-50/30 mb-4">
+                        <div class="flex justify-between items-center mb-3"><h3 class="font-bold text-yellow-800">
+                            10:00 瓦洛洛市場 (Warorot)
+                            <a href="https://www.google.com/maps/search/?api=1&query=Warorot+Market" target="_blank" class="text-gray-400 hover:text-yellow-600 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                        </h3><span class="text-xs font-bold bg-white border border-yellow-200 text-yellow-600 px-2 py-1 rounded">深度攻略</span></div>
                         <div class="space-y-4 text-sm text-gray-700">
-                            <p class="text-xs text-gray-500 leading-relaxed">
-                                清邁最古老、規模最大的傳統市場，被稱為「在地人的大廚房」。這裡不僅是採買伴手禮的聖地，B1 的美食街更是臥虎藏龍。因為今天行程較鬆，建議可以慢慢逛 2-3 小時。
-                            </p>
-
-                            <!-- Section 1: Must Buy (Damrong) -->
+                            <p class="text-xs text-gray-500 leading-relaxed">清邁最古老、規模最大的傳統市場，被稱為「在地人的大廚房」。這裡不僅是採買伴手禮的聖地，B1 的美食街更是臥虎藏龍。因為今天行程較鬆，建議可以慢慢逛 2-3 小時。</p>
                             <div class="bg-white p-3 rounded-lg border border-yellow-100">
-                                <p class="text-xs font-bold text-yellow-700 mb-2 border-b border-yellow-100 pb-1">
-                                    <i class="fa-solid fa-bag-shopping mr-1"></i> 1F 伴手禮名店：
-                                </p>
+                                <p class="text-xs font-bold text-yellow-700 mb-2 border-b border-yellow-100 pb-1">🛍️ 必買 & 必吃：</p>
                                 <ul class="space-y-2 text-xs text-gray-600">
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-star text-yellow-400 mt-0.5"></i>
-                                        <div>
-                                            <strong>Damrong (丹龍)</strong>：市場內最紅的排隊名店。必買<strong>炸豬皮</strong>(分帶油/不帶油)、<strong>泰北香腸</strong>(可真空包裝)。
-                                        </div>
-                                    </li>
-                                    <li class="flex items-start gap-2">
-                                        <i class="fa-solid fa-lemon text-green-400 mt-0.5"></i>
-                                        <div>
-                                            <strong>水果乾區</strong>：芒果乾、龍眼乾、草莓乾。中間走道有很多攤，都可以試吃，滿意再買 (記得殺價)。
-                                        </div>
-                                    </li>
+                                    <li><strong>Damrong (丹龍)</strong>：市場內最紅的排隊名店。必買<strong>炸豬皮</strong>(分帶油/不帶油)、<strong>泰北香腸</strong>(可真空包裝)。</li>
+                                    <li><strong>水果乾區</strong>：芒果乾、龍眼乾、草莓乾。中間走道有很多攤，都可以試吃，滿意再買 (記得殺價)。</li>
+                                    <li><strong>B1 在地美食街</strong>：泰北米線 (Kanom Jeen)、炸雞與糯米飯，便宜又好吃。</li>
                                 </ul>
                             </div>
-
-                            <!-- Section 2: Food Court -->
-                            <div class="bg-white p-3 rounded-lg border border-yellow-100">
-                                <p class="text-xs font-bold text-yellow-700 mb-2 border-b border-yellow-100 pb-1">
-                                    <i class="fa-solid fa-utensils mr-1"></i> B1 在地美食街：
-                                </p>
-                                <p class="text-xs text-gray-500 mb-2">不想去觀光餐廳？這裡有最道地的泰北味！</p>
-                                <ul class="space-y-1.5 text-xs text-gray-600">
-                                    <li><span class="text-orange-500 font-bold">• 泰北米線 (Kanom Jeen)</span>：酸辣開胃，當地人早餐首選。</li>
-                                    <li><span class="text-orange-500 font-bold">• 炸雞與糯米飯</span>：便宜又好吃。</li>
-                                </ul>
-                            </div>
-
-                            <!-- Section 3: Photo Spots -->
-                            <div class="bg-white p-3 rounded-lg border border-yellow-100">
-                                <p class="text-xs font-bold text-yellow-700 mb-2 border-b border-yellow-100 pb-1">
-                                    <i class="fa-solid fa-camera mr-1"></i> 周邊散策與拍照：
-                                </p>
-                                <ul class="space-y-1.5 text-xs text-gray-600">
-                                    <li><strong>Ton Lamyai 花市</strong>：就在對面，24小時營業，充滿色彩鮮豔的熱帶花卉 (荷花、蘭花)。</li>
-                                    <li><strong>網美天橋</strong>：連接兩個市場的天橋，可以俯拍底下的車水馬龍與雙條車，很有生活感。</li>
-                                    <li><strong>Ping River 河畔</strong>：逛累了可以走到後面的河邊吹風，看鴿子。</li>
-                                </ul>
-                            </div>
-                            
-                            <p class="text-[10px] text-gray-400 mt-1 italic">
-                                <i class="fa-solid fa-lightbulb text-yellow-500 mr-1"></i>
-                                小撇步：伴手禮如果買多，可以請店家幫忙打包裝箱，直接拖運很方便。
-                            </p>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Flight Info Expanded -->
                 <div class="relative">
-                    <div class="timeline-dot bg-blue-500"></div>
-                    <div class="info-card py-3 border-l-4 border-blue-500 pl-4 bg-blue-50/20">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-blue-500"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-blue-500 py-3 border-l-4 pl-4 bg-blue-50/20 mb-4">
                         <h3 class="font-bold text-blue-900 mb-2">14:20 飛往曼谷 (VZ 111) & 轉機須知</h3>
-                        
                         <div class="space-y-3">
-                            <div class="flex gap-3 text-sm">
-                                <span class="font-mono text-gray-500 w-12 shrink-0">12:20</span>
-                                <div class="text-gray-700">
-                                    <strong>抵達清邁機場</strong>
-                                    <p class="text-xs text-gray-500 mt-1">越捷航空 (VietJet) 排隊人潮較多，建議提早 2 小時抵達。國內線航廈在國際線旁邊，走路可到。</p>
-                                </div>
-                            </div>
-
+                            <div class="flex gap-3 text-sm"><span class="font-mono text-gray-500 w-12 shrink-0">12:20</span><div class="text-gray-700"><strong>抵達清邁機場</strong><p class="text-xs text-gray-500 mt-1">越捷航空人多，建議提早2小時。國內線航廈在國際線旁邊。</p></div></div>
                             <div class="bg-white p-3 rounded-lg border border-blue-100">
-                                <p class="text-xs font-bold text-blue-600 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> 登機與行李重點：</p>
+                                <p class="text-xs font-bold text-blue-600 mb-2">⚠️ 登機重點：</p>
                                 <ul class="text-xs text-gray-600 space-y-1.5">
                                     <li><strong>液體限制</strong>：雖然是國內線，隨身行李液體仍限制 100ml 內。蜂蜜、大罐保養品請務必<strong>託運</strong>。</li>
                                     <li><strong>行動電源</strong>：一定要放在<strong>隨身行李</strong>，嚴禁託運。</li>
                                     <li><strong>隨身限重</strong>：越捷對隨身 7kg 查得嚴，伴手禮太重建議事先加購託運。</li>
                                 </ul>
                             </div>
-
                             <div class="flex gap-3 text-sm border-t border-blue-100 pt-3">
                                 <span class="font-mono text-gray-500 w-12 shrink-0">15:35</span>
                                 <div class="text-gray-700">
                                     <strong>抵達曼谷 (BKK)</strong>
-                                    <p class="text-xs text-gray-500 mt-1">
-                                        領完行李後，請前往 <strong>入境大廳 2 樓 (Level 2)</strong> 的 <strong>Gate 4</strong> 附近。
-                                        <br>
-                                        尋找舉著 "The Park Nine" 牌子的飯店人員，確認名字後即可搭車。
-                                    </p>
+                                    <p class="text-xs text-gray-500 mt-1">領完行李後，請前往 <strong>入境大廳 2 樓 (Level 2)</strong> 的 <strong>Gate 4</strong> 附近。尋找舉著 "The Park Nine" 牌子的飯店人員，確認名字後即可搭車。</p>
                                 </div>
                             </div>
                         </div>
@@ -1017,58 +933,279 @@
         </div>
 
         <!-- ================= DAY 7 ================= -->
-        <div id="view-day7" class="view-section hidden">
+        <div id="view-day7" class="view-section hidden max-w-3xl mx-auto pb-24 px-4 pt-4">
             <h2 class="text-2xl font-bold text-gray-900 mb-4">Day 7 (12/08 一)</h2>
-            
-            <div class="day-intro">
-                <i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>
-                帶著滿滿的回憶返家。飯店距離機場很近，不用匆忙，優雅地結束這趟生日之旅。
-            </div>
-
-            <div class="timeline-container">
+            <div class="bg-gray-100/70 p-3 rounded-lg text-sm text-gray-600 mb-6 border border-gray-200 leading-relaxed"><i class="fa-solid fa-quote-left text-gray-400 mr-2"></i>帶著滿滿的回憶返家。飯店距離機場很近，不用匆忙，優雅地結束這趟生日之旅。</div>
+            <div class="relative pl-6 border-l-2 border-gray-200 ml-3 space-y-8 pb-8">
+                
+                <!-- 08:30 Going to Airport -->
                 <div class="relative">
-                    <div class="timeline-dot"></div>
-                    <div class="info-card py-3">
-                        <h3 class="font-bold text-gray-800">08:30 前往機場</h3>
-                        <p class="text-xs text-gray-500">搭乘飯店接駁車前往 Suvarnabhumi 機場。</p>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-gray-800">
+                                08:30 飯店 Check-out & 前往機場
+                                <a href="https://www.google.com/maps/search/?api=1&query=Suvarnabhumi+Airport" target="_blank" class="text-gray-400 hover:text-gray-600 ml-1 transition-colors duration-200 inline-block no-print"><i class="fa-solid fa-map-location-dot"></i></a>
+                            </h3>
+                        </div>
+                        <div class="space-y-3 text-sm text-gray-700">
+                            <ul class="space-y-2 text-xs text-gray-600">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-regular fa-clock text-blue-500 mt-0.5"></i>
+                                    <span><strong>退房手續</strong>：請預留 10-15 分鐘辦理退房，確認押金退還或結清雜支。</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-bus text-green-500 mt-0.5"></i>
+                                    <span><strong>飯店接駁</strong>：搭乘 The Park Nine 接駁車前往 BKK 機場（約 10-15 分鐘車程）。</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-plane-departure text-gray-500 mt-0.5"></i>
+                                    <span><strong>下車地點</strong>：出境大廳 4 樓 (Departure Level 4)。下車後請先查看電子看板確認 CI 834 報到櫃台 (通常是 S 或 W 排)。</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                <!-- 09:00 Departure Guide (Keep mostly same but ensure context continuity) -->
                 <div class="relative">
-                    <div class="timeline-dot bg-green-500"></div>
-                    <div class="info-card py-3 border-l-4 border-green-500 pl-4">
-                        <h3 class="font-bold text-gray-800">10:55 起飛 (CI 834)</h3>
-                        <p class="text-xs text-gray-500">15:25 抵達桃園，平安回家。</p>
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-orange-500 border-orange-100"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-200 bg-orange-50/20 mb-4">
+                        <h3 class="font-bold text-orange-800 mb-3 flex items-center gap-2">
+                            09:00 機場離境與退稅攻略
+                            <span class="text-[10px] bg-white border border-orange-300 text-orange-600 px-2 py-0.5 rounded">重要</span>
+                        </h3>
+                        <div class="space-y-3 text-sm text-gray-700">
+                            <p class="text-xs text-gray-500 leading-relaxed">BKK 機場非常大且人多，建議抵達後依序完成以下步驟：</p>
+                            
+                            <!-- VAT Refund Step -->
+                            <div class="bg-white p-3 rounded-lg border border-orange-100">
+                                <p class="text-xs font-bold text-orange-700 mb-1 flex items-center gap-1">
+                                    <i class="fa-solid fa-stamp"></i> 1. 退稅蓋章 (VAT Refund) - 最重要！
+                                </p>
+                                <p class="text-xs text-gray-600 mb-1">
+                                    若有買超過 2000 泰銖並填寫黃色退稅單 (PP10)，<strong>務必在 Check-in 掛行李前</strong>，先帶著「護照+退稅單+購買商品」去機場大廳 (Level 4) 的 <strong>Gate 10 旁邊</strong> 找海關蓋章。
+                                </p>
+                                <p class="text-[10px] text-red-500 italic">*若沒蓋章，進去後就無法領錢了！</p>
+                            </div>
+
+                            <!-- Check-in Step -->
+                            <div class="bg-white p-3 rounded-lg border border-gray-100">
+                                <p class="text-xs font-bold text-gray-700 mb-1 flex items-center gap-1">
+                                    <i class="fa-solid fa-suitcase"></i> 2. 華航報到 (China Airlines)
+                                </p>
+                                <p class="text-xs text-gray-600">
+                                    確認行李沒有違禁品 (行動電源要在隨身包)。托運後即可準備過安檢。
+                                </p>
+                            </div>
+
+                            <!-- Security & Pick up -->
+                            <div class="bg-white p-3 rounded-lg border border-gray-100">
+                                <p class="text-xs font-bold text-gray-700 mb-1 flex items-center gap-1">
+                                    <i class="fa-solid fa-person-walking-luggage"></i> 3. 安檢與領錢
+                                </p>
+                                <ul class="text-xs text-gray-600 space-y-1 list-disc pl-4">
+                                    <li>通過安檢與移民官後，往登機門方向走，會看到 <strong>VAT Refund for Tourists Office</strong>，憑剛剛蓋好章的單子領回現金。</li>
+                                    <li>若還有剩餘泰銖，可在免稅店把零錢花掉 (買芒果乾、大哥豆)。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10:55 Departure -->
+                <div class="relative">
+                    <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full border-4 border-white shadow-sm box-content bg-green-500 border-green-500"></div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-green-500 py-3 border-l-4 pl-4 mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-gray-800">10:55 起飛 (CI 834)</h3>
+                            <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded">返台</span>
+                        </div>
+                        <div class="space-y-3 text-sm text-gray-700">
+                            <div class="flex items-center gap-3 text-xs text-gray-600">
+                                <i class="fa-solid fa-plane text-blue-400"></i>
+                                <span>中華航空 A321neo / A330 (依機型而定)</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-xs text-gray-600">
+                                <i class="fa-solid fa-clock text-gray-400"></i>
+                                <span>飛行時間約 3 小時 30 分，機上提供午餐。</span>
+                            </div>
+                            <div class="border-t border-gray-100 pt-2 mt-2">
+                                <p class="font-bold text-gray-800 mb-1">15:25 抵達桃園機場 (TPE)</p>
+                                <ul class="text-xs text-gray-500 list-disc pl-4 space-y-1">
+                                    <li>使用 <strong>E-Gate (自動通關)</strong> 快速入境。</li>
+                                    <li>領取行李，平安回家！別忘了整理照片與戰利品。</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= KLOOK ================= -->
-        <div id="view-klook" class="view-section hidden">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">預訂清單</h2>
-            <div class="space-y-3">
-                <div class="info-card flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold shrink-0">K</div>
-                    <div>
-                        <div class="font-bold text-gray-800">Grandma's Cooking</div>
-                        <div class="text-xs text-gray-500">12/03 • 手作食物課程</div>
+        <!-- ================= KLOOK (Optimized Layout) ================= -->
+        <div id="view-klook" class="view-section hidden max-w-3xl mx-auto pb-24 px-4 pt-4">
+            <!-- Title -->
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                預訂與準備 <span class="text-sm font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-full">3 個行程</span>
+            </h2>
+
+            <!-- Booking Cards -->
+            <div class="space-y-4 mb-10">
+                
+                <!-- Item 1: Grandma's Cooking (UPDATED with Real Data) -->
+                <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col gap-3 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-orange-500"></div>
+                    <div class="flex justify-between items-start pl-3">
+                        <div class="flex gap-3">
+                            <div class="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600 font-bold shrink-0 text-xl">
+                                K
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-lg">Grandma's Cooking</h3>
+                                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                                    <i class="fa-regular fa-calendar"></i> 12/03 (三)
+                                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                    <i class="fa-regular fa-clock"></i> 11:30 - 15:45
+                                </div>
+                                <div class="text-[10px] text-gray-400 mt-1">CHEN WEI CHIH • 2 Pax • Not too spicy</div>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-1 rounded border border-green-200">
+                            已付款
+                        </span>
+                    </div>
+                    <div class="pl-3 mt-1 border-t border-gray-50 pt-2 flex justify-between items-center">
+                        <span class="text-xs text-gray-500 font-mono tracking-wide">憑證號: <span class="font-bold text-gray-800">KLK0741631875</span></span>
+                        <button class="text-xs text-orange-500 font-bold hover:underline">查看憑證 <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
                     </div>
                 </div>
-                <div class="info-card flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold shrink-0">K</div>
-                    <div>
-                        <div class="font-bold text-gray-800">粘粘瀑布包車</div>
-                        <div class="text-xs text-gray-500">12/04 • 包車一日遊</div>
+
+                <!-- Item 2 -->
+                <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col gap-3 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-orange-500"></div>
+                    <div class="flex justify-between items-start pl-3">
+                        <div class="flex gap-3">
+                            <div class="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600 font-bold shrink-0 text-xl">
+                                K
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-lg">粘粘瀑布包車</h3>
+                                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                                    <i class="fa-regular fa-calendar"></i> 12/04 (四)
+                                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                    <i class="fa-regular fa-clock"></i> 08:00
+                                </div>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-1 rounded border border-green-200">
+                            已付款
+                        </span>
+                    </div>
+                    <div class="pl-3 mt-1 border-t border-gray-50 pt-2 flex justify-between items-center">
+                        <span class="text-xs text-gray-400">憑證號: #KL4421...</span>
+                        <button class="text-xs text-orange-500 font-bold hover:underline">查看憑證 <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
                     </div>
                 </div>
-                <div class="info-card flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 shrink-0">
-                        <i class="fa-solid fa-wallet"></i>
+
+                <!-- Item 3 -->
+                <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col gap-3 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-gray-400"></div>
+                    <div class="flex justify-between items-start pl-3">
+                        <div class="flex gap-3">
+                            <div class="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600 font-bold shrink-0 text-xl">
+                                <i class="fa-solid fa-gun"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-lg">實彈射擊體驗</h3>
+                                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                                    <i class="fa-regular fa-calendar"></i> 12/05 (五)
+                                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                    <i class="fa-regular fa-clock"></i> 13:30
+                                </div>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold bg-gray-100 text-gray-600 px-2 py-1 rounded border border-gray-200">
+                            現場支付
+                        </span>
                     </div>
+                    <div class="pl-3 mt-1 border-t border-gray-50 pt-2">
+                        <p class="text-xs text-gray-500"><i class="fa-solid fa-triangle-exclamation text-yellow-500 mr-1"></i> 記得攜帶護照正本</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Packing List (Categorized & Expanded) -->
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-purple-100 bg-purple-50 mb-4">
+                <h3 class="font-bold text-purple-800 mb-4 flex items-center gap-2 text-base border-b border-purple-200 pb-2">
+                    <i class="fa-solid fa-suitcase-rolling"></i> 行李檢查清單
+                </h3>
+                <div class="space-y-5">
+                    
+                    <!-- Category 1 -->
                     <div>
-                        <div class="font-bold text-gray-800">實彈射擊</div>
-                        <div class="text-xs text-gray-500">12/05 • 現場支付</div>
+                        <p class="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1"><i class="fa-solid fa-passport"></i> 證件與錢財</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>護照 (效期>6個月)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>身分證 (備用)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>國際駕照 (A類)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>台灣駕照 (正本)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>現金 (2萬泰銖)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>信用卡 (海外回饋)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>英文保險證明</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>行程/機票憑證</span></label>
+                        </div>
                     </div>
+
+                    <!-- Category 2 -->
+                    <div>
+                        <p class="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1"><i class="fa-solid fa-plug"></i> 電子與3C</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>手機 & 充電線</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>行動電源 (隨身)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>網卡/Sim針</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>相機/Gopro</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Category 3 -->
+                    <div>
+                        <p class="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1"><i class="fa-solid fa-shirt"></i> 衣物與穿搭</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>薄外套 (早晚涼)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>遮陽帽/墨鏡</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>泳衣 (瀑布/泳池)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>好走的鞋/涼鞋</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>換洗衣物 (7天)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>睡衣/拖鞋</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Category 4 -->
+                    <div>
+                        <p class="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1"><i class="fa-solid fa-kit-medical"></i> 盥洗與醫藥</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>腸胃藥/止痛藥</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>暈車藥/OK繃</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>防蚊液 (必備)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>防曬乳</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>牙刷牙膏</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>個人保養品</span></label>
+                        </div>
+                    </div>
+
+                     <!-- Category 5 -->
+                    <div>
+                        <p class="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1"><i class="fa-solid fa-box-open"></i> 其他雜項</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>摺疊傘 (遮陽)</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>環保購物袋</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>濕紙巾/面紙</span></label>
+                            <label class="flex items-center gap-2 check-item cursor-pointer"><input type="checkbox" class="accent-purple-500 w-4 h-4"> <span>原子筆</span></label>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -1077,7 +1214,6 @@
 
     <script>
         function switchTab(viewId) {
-            // 切換內容
             const sections = document.querySelectorAll('.view-section');
             sections.forEach(el => el.classList.add('hidden'));
             
@@ -1089,21 +1225,22 @@
                 return;
             }
             
-            // 切換按鈕
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.className = 'nav-btn inactive';
+            document.querySelectorAll('button[id^="tab-"]').forEach(btn => {
+                btn.className = 'px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-white text-gray-500 border-gray-200 hover:bg-gray-50';
+                if (btn.id === 'tab-day4') {
+                    btn.classList.add('text-pink-500');
+                }
             });
             
             const activeBtn = document.getElementById('tab-' + viewId);
             if (activeBtn) {
-                activeBtn.className = 'nav-btn active';
-                // 生日 Tab 額外上色
+                activeBtn.className = 'px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 whitespace-nowrap border border-transparent flex items-center gap-2 bg-slate-800 text-white shadow-md scale-105';
                 if (viewId === 'day4') {
-                    activeBtn.classList.add('bg-pink-500', 'border-pink-500');
+                    activeBtn.classList.remove('bg-slate-800');
+                    activeBtn.classList.add('bg-pink-500', 'border-pink-500', 'text-white');
                 }
             }
 
-            // Confetti 控制
             if (viewId === 'day4') {
                 createConfetti();
             } else {
